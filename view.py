@@ -37,7 +37,8 @@ class GameScreen(object):
         result = pygame.init()
         pygame.font.init()
         pygame.display.set_caption('Sketchbook')
-        self.screen = pygame.display.set_mode((600, 100))
+        #Screen creation
+        self.screen = pygame.display.set_mode((640,480))
         self.clock = pygame.time.Clock()
         self.smallfont = pygame.font.Font(None, 40)
         self.isinitialized = True
