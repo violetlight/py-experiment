@@ -19,18 +19,42 @@ class GameScreen(object):
             self.isinitialized = False
             pygame.quit()
         elif isinstance(event, TickEvent):
-            self.renderall()
+            if not self.isinitialized:
+                return
+            currentstate = self.model.state.peek()
+            if currentstate == model.STATE_MENU:
+                self.rendermenu()
+            if currentstate == model.STATE_PLAY:
+                self.renderplay()
+            if currentstate == model.STATE_HELP:
+                self.renderhelp()
             self.clock.tick(30)
 
-    def renderall(self):
-        if not self.isinitialized:
-            return
+    def rendermenu(self):
         self.screen.fill((0,0,0))
-        test_text = self.smallfont.render(
-                'importado y distribudo',
+        words = self.smallfont.render(
+                "You are in the Menu. Space to play. Esc exits.",
                 True,
-                (128, 255, 128))
-        self.screen.blit(test_text, (0, 0))
+                (64,64,128))
+        self.screen.blit(words, (0,0))
+        pygame.display.flip()
+
+    def renderplay(self):
+        self.screen.fill((30,30,30))
+        words = self.smallfont.render(
+                "You're playing! F1 for help.",
+                True,
+                (0,255,96))
+        self.screen.blit(words, (0,0))
+        pygame.display.flip()
+
+    def renderhelp(self):
+        self.screen.fill((0,0,0))
+        words = self.smallfont.render(
+                "This is help. Space, Esc, or Enter",
+                True,
+                (128, 64, 64))
+        self.screen.blit(words, (0,0))
         pygame.display.flip()
 
     def initialize(self):

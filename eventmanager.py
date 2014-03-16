@@ -24,6 +24,16 @@ class InitializeEvent(Event):
     def __init__(self):
         self.name = "Initialize event"
 
+class StateChangeEvent(Event):
+    def __init__(self, state):
+        self.name = "State Change event"
+        self.state = state
+
+    def __str__(self):
+        if self.state:
+            return '%s pushed %s' % (self.name, self.state)
+        else:
+            return '%s popped' % self.name
 class EventManager(object):
     def __init__(self):
         from weakref import WeakKeyDictionary

@@ -17,15 +17,30 @@ class Keyboard(object):
                 #Keyboard
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.evManager.Post(QuitEvent())
+                        self.evManager.Post(StateChangeEvent(None))
                     else:
-                        self.evManager.Post(InputEvent(event.unicode, None))
+                        currentstate = self.model.state.peek()
+                        if currentstate == model.STATE_MENU:
+                            self.keydownmenu(event)
+                        if currentstate == model.STATE_PLAY:
+                            self.keydownplay(event)
+                        if currentstate == model.STATE_HELP:
+                            self.keydownhelp(event)
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        self.evManager.Post(InputEvent("Left click", None))
-                    if event.button == 2:
-                        self.evManager.Post(InputEvent("Mouse Wheel click", None))
-                    if event.button == 3:
-                        self.evManager.Post(InputEvent("Right click", None))
+    def keydownmenu(self, event):
+        if event.key == pygame.K_ESCAPE:
+            self.evManager.Post(StateChangeEvent(None))
+        if event.key == pygame.K_SPACE:
+            self.evManager.Post(StateChangeEvent(model.STATE_PLAY))
 
+    def keydownhelp(self, event):
+        if event.key in [pygame.K_ESCAPE, pygame.K_SPACE, pygame.K_RETURN]:
+            self.evManager.Post(StateChangeEvent(None))
+
+    def keydownplay(self, event):
+        if event.key == pygame.K_ESCAPE:
+            self.evManager.Post(StateChangeEvent(None))
+        if event.key == pygame.K_F1:
+            self.evManager.Post(StateChangeEvent(model.STATE_HELP))
+        else:
+            self.evManager.Post(InputEvent(event.unicode, None))
