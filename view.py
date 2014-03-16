@@ -41,11 +41,14 @@ class GameScreen(object):
 
     def renderplay(self):
         self.screen.fill((30,30,30))
-        words = self.smallfont.render(
-                "You're playing! F1 for help.",
-                True,
-                (0,255,96))
-        self.screen.blit(words, (0,0))
+        #here
+        from maps import MAP, TILESET
+        self.background = pygame.Surface(self.screen.get_size())
+        for row in range(len(MAP)):
+            for col in range(len(MAP[row])):
+                location = (col*32, row*32)
+                self.background.blit(TILESET, location, MAP[row][col])
+        self.screen.blit(self.background, (0,0))
         pygame.display.flip()
 
     def renderhelp(self):
