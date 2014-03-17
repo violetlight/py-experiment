@@ -1,5 +1,10 @@
 import pygame
 
+
+class Landscape(object):
+
+    def __init__(self): pass
+
 TILESET = pygame.image.load('images/tiles.png')
 
 g = pygame.Rect(0,0,  32,32)

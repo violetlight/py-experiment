@@ -1,5 +1,6 @@
 import pygame
 import model
+from charactors import Player
 from eventmanager import *
 
 class GameScreen(object):
@@ -11,6 +12,9 @@ class GameScreen(object):
         self.screen = None
         self.clock = None
         self.smallfont = None
+        self.backSprites = pygame.sprite.RenderUpdates()
+        self.frontSprites = pygame.sprite.RenderUpdates()
+
 
     def notify(self, event):
         if isinstance(event, InitializeEvent):
@@ -44,11 +48,14 @@ class GameScreen(object):
         #here
         from maps import MAP, TILESET
         self.background = pygame.Surface(self.screen.get_size())
+        self.player = Player()
+        #This should all happen in the map object that should be made
         for row in range(len(MAP)):
             for col in range(len(MAP[row])):
                 location = (col*32, row*32)
                 self.background.blit(TILESET, location, MAP[row][col])
         self.screen.blit(self.background, (0,0))
+        self.screen.blit(self.player.image, self.player.rect)
         pygame.display.flip()
 
     def renderhelp(self):
