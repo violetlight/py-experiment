@@ -1,6 +1,7 @@
 import pygame
 import model
 from charactors import Player
+from scenery import Decor
 from eventmanager import *
 
 class GameScreen(object):
@@ -48,14 +49,16 @@ class GameScreen(object):
         #here
         from maps import MAP, TILESET
         self.background = pygame.Surface(self.screen.get_size())
-        self.player = Player()
+        self.player = Player(self.frontSprites)
+        self.tree = Decor(self.backSprites)
         #This should all happen in the map object that should be made
         for row in range(len(MAP)):
             for col in range(len(MAP[row])):
                 location = (col*32, row*32)
                 self.background.blit(TILESET, location, MAP[row][col])
         self.screen.blit(self.background, (0,0))
-        self.screen.blit(self.player.image, self.player.rect)
+        bsprites = self.backSprites.draw(self.screen)
+        fsprites = self.frontSprites.draw(self.screen)
         pygame.display.flip()
 
     def renderhelp(self):
