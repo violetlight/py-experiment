@@ -1,23 +1,23 @@
 #!/usr/bin/env python2
+
+#################################################
+#TO DO:
+#   seperate level and platforms into their own module, 
+#  it really needs to be cleaned up. 
+#
+#  transform player's image based on direction (flip if left or right)
+#
+
+
+
 import pygame
 import sys
 from random import randint
 from constants import *
 
-class Wall(pygame.sprite.Sprite):
-    def __init__(self, pos, size):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = pygame.Surface(size)
-        self.image.fill(WALLCOLOR)
-
-        self.rect = self.image.get_rect()
-        self.rect.x = pos[0]
-        self.rect.y = pos[1]
-
-
 class Player(pygame.sprite.Sprite):
 
+    #initialize these variables
     change_x = 0
     change_y = 0
     level = None
@@ -25,16 +25,15 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = pygame.Surface(PLAYERSIZE)
-        self.image.fill(RED)
+
+        #player image
+        self.image = pygame.image.load('../images/trent.png')
+        #self.image = pygame.Surface(PLAYERSIZE)
+        #self.image.fill(RED)
 
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
-
-    def changespeed(self, x, y):
-        self.change_x += x
-        self.change_y += y
 
     def update(self):
         ###move player###
@@ -64,6 +63,7 @@ class Player(pygame.sprite.Sprite):
 
             self.change_y = 0 #reset self.change_y value so that you aren't moving up anymore if jumping and gravity can take its course
 
+
     def calc_grav(self):
         if self.change_y == 0:#if change_y is nothing...
             self.change_y = 1 #keep pushing player down one...?
@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y -= 2 #moves back up
 
         #if collided with a platform or if you're at the bottom of the screen, then you are allowed to jump
-        if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
+        if len(platform_hit_list) > 0 or self.rect.bottom >= SCREENH:
             self.change_y = -10 #jump.. negative
 
     #player controlled movement
@@ -102,7 +102,7 @@ class Platform(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface(size)
-        self.image.fill(GREEN)
+        self.image.fill(WALLCOLOR)
 
         self.rect = self.image.get_rect()
 
@@ -135,6 +135,7 @@ class Level01(Level):
         level = [[210, 70, 500, 500],  #a list of platform rect-style  lists
                 [210, 70, 200, 400],
                 [210, 70, 600, 300],
+                [210, 70, 100, 100],
                 ]
         for platform in level:  #for each element of level, create a platform
             block = Platform((platform[0], platform[1]))
@@ -174,7 +175,7 @@ def main():
                     player.go_left()
                 if event.key == pygame.K_RIGHT:
                     player.go_right()
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_SPACE:
                     player.jump()
 
             if event.type == pygame.KEYUP:
