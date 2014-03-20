@@ -34,6 +34,26 @@ class StateChangeEvent(Event):
             return '%s pushed %s' % (self.name, self.state)
         else:
             return '%s popped' % self.name
+
+#######################################
+#
+#   Player motion
+#
+#######################################
+class PlayerMoveEvent(Event):
+    def __init__(self, direction):
+        self.name = "Player Move Event"
+        self.direction = direction
+
+class PlayerStopMovingEvent(Event):
+    def __init__(self):
+        self.name = "Player Stop Moving Event"
+
+#######################################
+#
+#    Event Manager
+#
+#######################################
 class EventManager(object):
     def __init__(self):
         from weakref import WeakKeyDictionary

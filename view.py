@@ -1,6 +1,6 @@
 import pygame
 import model
-from charactors import Player
+from charactors import Trent, Woman 
 from scenery import Decor
 from eventmanager import *
 
@@ -15,7 +15,6 @@ class GameScreen(object):
         self.smallfont = None
         self.backSprites = pygame.sprite.RenderUpdates()
         self.frontSprites = pygame.sprite.RenderUpdates()
-
 
     def notify(self, event):
         if isinstance(event, InitializeEvent):
@@ -49,7 +48,7 @@ class GameScreen(object):
         #here
         from maps import MAP, TILESET
         self.background = pygame.Surface(self.screen.get_size())
-        self.player = Player(self.frontSprites)
+        self.lady = Woman(self.frontSprites)
         self.tree = Decor(self.backSprites)
         #This should all happen in the map object that should be made
         for row in range(len(MAP)):
@@ -57,6 +56,8 @@ class GameScreen(object):
                 location = (col*32, row*32)
                 self.background.blit(TILESET, location, MAP[row][col])
         self.screen.blit(self.background, (0,0))
+        self.backSprites.clear(self.screen, self.background)
+        self.frontSprites.clear(self.screen, self.background)
         bsprites = self.backSprites.draw(self.screen)
         fsprites = self.frontSprites.draw(self.screen)
         pygame.display.flip()
@@ -79,3 +80,4 @@ class GameScreen(object):
         self.clock = pygame.time.Clock()
         self.smallfont = pygame.font.Font(None, 40)
         self.isinitialized = True
+        self.player = Trent(self.evManager, self.frontSprites)

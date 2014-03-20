@@ -15,7 +15,7 @@ class Keyboard(object):
                 if event.type == pygame.QUIT:
                     self.evManager.Post(QuitEvent())
                 #Keyboard
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     if event.key == pygame.K_ESCAPE:
                         self.evManager.Post(StateChangeEvent(None))
                     else:
@@ -38,9 +38,19 @@ class Keyboard(object):
             self.evManager.Post(StateChangeEvent(None))
 
     def keydownplay(self, event):
-        if event.key == pygame.K_ESCAPE:
-            self.evManager.Post(StateChangeEvent(None))
-        if event.key == pygame.K_F1:
-            self.evManager.Post(StateChangeEvent(model.STATE_HELP))
+        #Keydown events
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.evManager.Post(StateChangeEvent(None))
+            elif event.key == pygame.K_F1:
+                self.evManager.Post(StateChangeEvent(model.STATE_HELP))
+            elif event.key == pygame.K_RIGHT:
+                self.evManager.Post(PlayerMoveEvent('right'))
+            elif event.key == pygame.K_LEFT:
+                self.evManager.Post(PlayerMoveEvent('left'))
+        #Keyup events
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
+                self.evManager.Post(PlayerStopMovingEvent())
         else:
             self.evManager.Post(InputEvent(event.unicode, None))
