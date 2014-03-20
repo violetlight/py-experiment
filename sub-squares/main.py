@@ -43,45 +43,49 @@ class Player(pygame.sprite.Sprite):
         #left/right
         self.rect.x += self.change_x
 
+        ###check for collisions with platforms###
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            if self.change_x > 0:
-                self.rect.right = block.rect.left
-            elif self.change_x < 0:
-                self.rect.left = block.rect.right
+            if self.change_x > 0: #if moving right
+                self.rect.right = block.rect.left #set the right edge of the player to the left edge fo the block you collided with
+            elif self.change_x < 0: #if moving left
+                self.rect.left = block.rect.right #do the inverse
 
-        #up/down
+        #up/down, player's y position changes based on value of self.change_y
         self.rect.y += self.change_y
 
+        ###check for collisions with platforms again... why?###
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            if self.change_y > 0:
-                self.rect.bottom = block.rect.top
-            elif self.change_y < 0:
-                self.rect.top = block.rect.bottom
+            if self.change_y > 0:#if moving down
+                self.rect.bottom = block.rect.top #set the bottom of the player rect to the top of the block you collided with
+            elif self.change_y < 0:#if moving up
+                self.rect.top = block.rect.bottom#do the inverse
 
-            self.change_y = 0
+            self.change_y = 0 #reset self.change_y value so that you aren't moving up anymore if jumping and gravity can take its course
 
     def calc_grav(self):
-        if self.change_y == 0:
-            self.change_y = 1
+        if self.change_y == 0:#if change_y is nothing...
+            self.change_y = 1 #keep pushing player down one...?
         else:
-            self.change_y += .35
+            self.change_y += .35 #otherwise, if change_y is anything, add .35 to it (positive numbers represent downward motion)
 
+        #if bottom of player is outside of screen and still moving down...
         if self.rect.y >= SCREENH - self.rect.height and self.change_y >= 0:
-            self.change_y = 0
-            self.rect.y = SCREENH - self.rect.height
+            self.change_y = 0 #stop y motion
+            self.rect.y = SCREENH - self.rect.height #set player's bottom edge on bottom of screen
 
     def jump(self):
 
         #moves down two px to check for platform collision below
         self.rect.y += 2
+        #should collide if platform is below
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
-        self.rect.y -= 2
+        self.rect.y -= 2 #moves back up
 
-        #if collided with a platform or if you're at the bottom of the screen
+        #if collided with a platform or if you're at the bottom of the screen, then you are allowed to jump
         if len(platform_hit_list) > 0 or self.rect.bottom >= SCREEN_HEIGHT:
-            self.change_y = -10 #jump
+            self.change_y = -10 #jump.. negative
 
     #player controlled movement
     def go_left(self):
@@ -96,7 +100,7 @@ class Player(pygame.sprite.Sprite):
 class Platform(pygame.sprite.Sprite):
     def __init__(self, size):
         pygame.sprite.Sprite.__init__(self)
-        
+
         self.image = pygame.Surface(size)
         self.image.fill(GREEN)
 
@@ -109,34 +113,35 @@ class Level(object):
     background = None
 
     def __init__(self, player):
-        self.platform_list = pygame.sprite.Group()
-        self.enemy_list = pygame.sprite.Group()
-        self.player = player
+
+        self.platform_list = pygame.sprite.Group() #group for platforms
+        self.enemy_list = pygame.sprite.Group() # group for enemies.. not yet used
+        self.player = player # player passed to level
 
     def update(self):
-        self.platform_list.update()
-        self.enemy_list.update()
+        self.platform_list.update() #call update on every platform object
+        self.enemy_list.update() # and every enemy object ... not yet used though--so empty
 
     def draw(self, screen):
         screen.fill(WHITE)
 
-        self.platform_list.draw(screen)
-        self.enemy_list.draw(screen)
+        self.platform_list.draw(screen) #draw every platform based on their image and rect
+        self.enemy_list.draw(screen) #   and enemies if they existed
 
 class Level01(Level):
     def __init__(self, player):
         Level.__init__(self, player)
 
-        level = [[210, 70, 500, 500],
+        level = [[210, 70, 500, 500],  #a list of platform rect-style  lists
                 [210, 70, 200, 400],
                 [210, 70, 600, 300],
                 ]
-        for platform in level:
+        for platform in level:  #for each element of level, create a platform
             block = Platform((platform[0], platform[1]))
             block.rect.x = platform[2]
             block.rect.y = platform[3]
             block.player = self.player
-            self.platform_list.add(block)
+            self.platform_list.add(block) #and add it to platform list
 
 
 def main():
