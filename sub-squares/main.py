@@ -35,12 +35,23 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = pos[0]
         self.rect.y = pos[1]
 
+        #default gravity amount
+        self.grav_amount = .35
+
     def update(self):
         ###move player###
         #gravity
-        self.calc_grav()
+        self.calc_grav(self.grav_amount)
         #left/right
         self.rect.x += self.change_x
+
+        ###check for collision with gravity_blocks###
+        block_hit_list = pygame.sprite.spritecollide(self, self.level.special_blocks, False)
+        for block in block_hit_list:
+            if isinstance(block, GravityBlock):
+                self.grav_amount = .15
+                self.level.special_blocks.remove(block)
+
 
         ###check for collisions with platforms###
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -64,11 +75,11 @@ class Player(pygame.sprite.Sprite):
             self.change_y = 0 #reset self.change_y value so that you aren't moving up anymore if jumping and gravity can take its course
 
 
-    def calc_grav(self):
+    def calc_grav(self, amount):
         if self.change_y == 0:#if change_y is nothing...
             self.change_y = 1 #keep pushing player down one...?
         else:
-            self.change_y += .35 #otherwise, if change_y is anything, add .35 to it (positive numbers represent downward motion)
+            self.change_y += amount #otherwise, if change_y is anything, add .35 to it (positive numbers represent downward motion)
 
         #if bottom of player is outside of screen and still moving down...
         if self.rect.y >= SCREENH - self.rect.height and self.change_y >= 0:
@@ -106,9 +117,19 @@ class Platform(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
+class GravityBlock(pygame.sprite.Sprite):
+    def __init__(self, size):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.Surface(size)
+        self.image.fill(BLUE)
+
+        self.rect = self.image.get_rect()
+
 class Level(object):
     platform_list = None
     enemy_list = None
+    special_blocks = None
 
     background = None
 
@@ -116,17 +137,20 @@ class Level(object):
 
         self.platform_list = pygame.sprite.Group() #group for platforms
         self.enemy_list = pygame.sprite.Group() # group for enemies.. not yet used
+        self.special_blocks = pygame.sprite.Group() #group for gravity blocks
         self.player = player # player passed to level
 
     def update(self):
         self.platform_list.update() #call update on every platform object
         self.enemy_list.update() # and every enemy object ... not yet used though--so empty
+        self.special_blocks.update()
 
     def draw(self, screen):
         screen.fill(WHITE)
 
         self.platform_list.draw(screen) #draw every platform based on their image and rect
         self.enemy_list.draw(screen) #   and enemies if they existed
+        self.special_blocks.draw(screen)
 
 class Level01(Level):
     def __init__(self, player):
@@ -144,6 +168,11 @@ class Level01(Level):
             block.player = self.player
             self.platform_list.add(block) #and add it to platform list
 
+        gravityblock = GravityBlock((64,64))
+        gravityblock.rect.x = 200
+        gravityblock.rect.y = 336
+        gravityblock.player = self.player
+        self.special_blocks.add(gravityblock)
 
 def main():
     #pygame.init()
