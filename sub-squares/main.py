@@ -9,7 +9,7 @@
 #
 
 
-
+from __future__ import print_function
 import pygame
 import sys
 from random import randint
@@ -118,13 +118,27 @@ class Platform(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 class GravityBlock(pygame.sprite.Sprite):
-    def __init__(self, size):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
-        self.image = pygame.Surface(size)
-        self.image.fill(BLUE)
-
+        self.image = pygame.Surface((32,32))
+        self.blue = 100
+        self.blueup = True
+        self.image.fill((20, 45, self.blue))
         self.rect = self.image.get_rect()
+
+    def update(self):
+
+        if self.blueup:
+            self.blue += 8
+            if self.blue >= 245:
+                self.blueup = False
+        else:
+            self.blue -= 8
+            if self.blue <= 100:
+                self.blueup = True
+
+        self.image.fill((10, 25, self.blue))
 
 class Level(object):
     platform_list = None
@@ -143,7 +157,7 @@ class Level(object):
     def update(self):
         self.platform_list.update() #call update on every platform object
         self.enemy_list.update() # and every enemy object ... not yet used though--so empty
-        self.special_blocks.update()
+        self.special_blocks.update() #update special blocks
 
     def draw(self, screen):
         screen.fill(WHITE)
@@ -168,11 +182,13 @@ class Level01(Level):
             block.player = self.player
             self.platform_list.add(block) #and add it to platform list
 
-        gravityblock = GravityBlock((64,64))
+        #Create gravity block and add it to the special_blocks list
+        gravityblock = GravityBlock()
         gravityblock.rect.x = 200
         gravityblock.rect.y = 336
         gravityblock.player = self.player
         self.special_blocks.add(gravityblock)
+
 
 def main():
     #pygame.init()
@@ -214,6 +230,7 @@ def main():
                     player.stop()
 
         active_sprite_list.update()
+
 
         current_level.update()
 
