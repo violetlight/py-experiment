@@ -25,5 +25,6 @@ RED   = (255,  64,  64)
 BLUE  = ( 64,  64, 255)
 GREEN = ( 64, 255,  64)
 
-WALLCOLOR  = ( 74, 109,  92)
+BULLETCOLOR = ( 16,  18,  14)
+WALLCOLOR  =  ( 74, 109,  92)
 

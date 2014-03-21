@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
 
 
         #player image
-        self.image = pygame.image.load('../images/trent.png')
+        self.image = pygame.image.load('../images/woman.png')
         #self.image = pygame.Surface(PLAYERSIZE)
         #self.image.fill(RED)
 
@@ -147,6 +147,23 @@ class Player(pygame.sprite.Sprite):
     def stopjump(self):
         self.change_y = self.change_y / 2
 
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, owner):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.owner = owner
+        self.direction = self.owner.facing
+        self.image = pygame.Surface((4, 10))
+        self.image.fill(BULLETCOLOR)
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        if self.direction == 'right':
+            self.rect.x += 10
+        else:
+            self.rect.x -= 10
+
+
 class Platform(pygame.sprite.Sprite):
     def __init__(self, size):
         pygame.sprite.Sprite.__init__(self)
@@ -214,12 +231,16 @@ class Level(object):
         self.platform_list = pygame.sprite.Group() #group for platforms
         self.enemy_list = pygame.sprite.Group() # group for enemies.. not yet used
         self.special_blocks = pygame.sprite.Group() #group for gravity blocks
+        self.bullet_list = pygame.sprite.Group()
+        #self.all_sprites_list = pygame.sprite.Group()
         self.player = player # player passed to level
 
     def update(self):
         self.platform_list.update() #call update on every platform object
         self.enemy_list.update() # and every enemy object ... not yet used though--so empty
         self.special_blocks.update() #update special blocks
+        self.bullet_list.update() #might be able to remove all of these
+        #self.all_sprites_list.update()
 
     def shift_world(self, shift_x):
         self.world_shift += shift_x
@@ -259,6 +280,7 @@ class Level01(Level):
         speedblock.rect.y = 250
         speedblock.player = self.player
         self.special_blocks.add(gravityblock, speedblock)
+        #self.all_sprites_list.add(gravityblock, speedblock)
 
     def draw(self):
 
@@ -266,6 +288,8 @@ class Level01(Level):
         self.platform_list.draw(SCREEN)
         self.enemy_list.draw(SCREEN)
         self.special_blocks.draw(SCREEN)
+        self.bullet_list.draw(SCREEN)
+        #self.all_sprites_list.draw(SCREEN)
 
 class Level02(Level):
     def __init__(self, player):
@@ -298,12 +322,15 @@ class Level02(Level):
         speedblock.player = self.player
         self.special_blocks.add(gravityblock, speedblock)
 
+        #self.all_sprites_list.add(gravityblock, speedblock)
+
     def draw(self):
 
         SCREEN.fill(GREEN)
         self.platform_list.draw(SCREEN)
         self.enemy_list.draw(SCREEN)
         self.special_blocks.draw(SCREEN)
+        #self.all_sprites_list.draw(SCREEN)
 
 
 
@@ -334,23 +361,30 @@ def main():
 
             #call player methods based on keyboard input
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     player.go_left()
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d:
                     player.go_right()
                 if event.key == pygame.K_SPACE:
                     player.jump()
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT and player.change_x < 0:
+                if event.key == pygame.K_a and player.change_x < 0:
                     player.stop()
-                if event.key == pygame.K_RIGHT and player.change_x > 0:
+                if event.key == pygame.K_d and player.change_x > 0:
                     player.stop()
                 if event.key == pygame.K_SPACE and player.change_y < 0:
                     player.stopjump() # if player releases space it calls stopjump, player can control jump amount
 
-        active_sprite_list.update()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                bullet = Bullet(player)
+                bullet.rect.x = player.rect.x
+                bullet.rect.y = player.rect.y
+                #current_level.all_sprites_list.add(bullet)
+                current_level.bullet_list.add(bullet)
 
+
+        active_sprite_list.update()
 
         current_level.update()
 
@@ -377,6 +411,16 @@ def main():
                 current_level_no += 1
                 current_level = level_list[current_level_no]
                 player.level = current_level
+
+        for bullet in current_level.bullet_list:
+            block_hit_list = pygame.sprite.spritecollide(bullet, current_level.enemy_list, False)
+            for block in block_hit_list:
+                current_level.bullet_list.remove(bullet)
+                #current_level.all_sprites_list.remove(bullet)
+            if bullet.rect.x < 0 or bullet.rect.x > SCREENW:
+                current_level.bullet_list.remove(bullet)
+                #current_level.all_sprites_list.remove(bullet)
+        
 
         current_level.draw()
         active_sprite_list.draw(SCREEN)
