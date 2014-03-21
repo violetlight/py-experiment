@@ -12,6 +12,7 @@
 from __future__ import print_function
 import pygame
 import sys
+from time import time
 from random import randint
 from constants import *
 
@@ -36,6 +37,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = pos[1]
 
         self.facing = 'right'
+        self.effects = []
+
+        self.speedmodifier = 1
 
         #default gravity amount
         self.grav_amount = .35
@@ -53,7 +57,11 @@ class Player(pygame.sprite.Sprite):
             if isinstance(block, GravityBlock):
                 self.grav_amount = .15
                 self.level.special_blocks.remove(block)
-
+            if isinstance(block, SpeedBlock):
+                self.speed_start = time()
+                self.speedmodifier = 2
+                self.effects.append('speed')
+                self.level.special_blocks.remove(block)
 
         ###check for collisions with platforms###
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -76,6 +84,13 @@ class Player(pygame.sprite.Sprite):
 
             self.change_y = 0 #reset self.change_y value so that you aren't moving up anymore if jumping and gravity can take its course
 
+
+        ###check for status effects###
+        if self.effects:
+            if self.effects[0] == 'speed':
+                if time() - self.speed_start > 5:
+                    self.speedmodifier = 1
+                    self.effects.pop()
 
     def calc_grav(self, amount):
         if self.change_y == 0:#if change_y is nothing...
@@ -102,15 +117,15 @@ class Player(pygame.sprite.Sprite):
 
     #player controlled movement
     def go_left(self):
-        self.change_x = -6
+        self.change_x = -6 * self.speedmodifier
         if self.facing == 'right':
-            self.image = pygame.transform.flip(self.image, 1, 0)
+            self.image = pygame.transform.flip(self.image, 1, 0) #flips image based on direction
             self.facing = 'left'
 
     def go_right(self):
-        self.change_x = 6
+        self.change_x = 6 * self.speedmodifier
         if self.facing == 'left':
-            self.image = pygame.transform.flip(self.image, 1, 0)
+            self.image = pygame.transform.flip(self.image, 1, 0) #same thing as above
             self.facing = 'right'
 
     def stop(self):
@@ -136,7 +151,7 @@ class GravityBlock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def update(self):
-
+        """Fades color brightness in and out"""
         if self.blueup:
             self.blue += 8
             if self.blue >= 245:
@@ -147,6 +162,28 @@ class GravityBlock(pygame.sprite.Sprite):
                 self.blueup = True
 
         self.image.fill((10, 25, self.blue))
+
+class SpeedBlock(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.Surface((32,32))
+        self.green = 100
+        self.greenup = True
+        self.image.fill((180, self.green, 20))
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        if self.greenup:
+            self.green += 8
+            if self.green >= 245:
+                self.greenup = False
+        else:
+            self.green -= 8
+            if self.green <= 100:
+                self.greenup = True
+
+        self.image.fill((180, self.green, 20))
 
 class Level(object):
     platform_list = None
@@ -195,7 +232,12 @@ class Level01(Level):
         gravityblock.rect.x = 200
         gravityblock.rect.y = 336
         gravityblock.player = self.player
-        self.special_blocks.add(gravityblock)
+
+        speedblock = SpeedBlock()
+        speedblock.rect.x = 600
+        speedblock.rect.y = 250
+        speedblock.player = self.player
+        self.special_blocks.add(gravityblock, speedblock)
 
 
 def main():
