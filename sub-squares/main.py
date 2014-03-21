@@ -294,6 +294,8 @@ class Level01(Level):
         Level.__init__(self, player)
         self.level_limit_r = -1000
         self.level_limit_l = 1000
+        self.backgroundimg = pygame.image.load('../images/level1bg.png')
+        self.bgrect = self.backgroundimg.get_rect(x=-self.level_limit_l, y=0)
 
         # a lsit of platforms........
         #           width  X     Y  of top left
@@ -326,7 +328,7 @@ class Level01(Level):
 
     def draw(self):
 
-        SCREEN.fill(WHITE)
+        SCREEN.blit(self.backgroundimg, self.bgrect)
         self.platform_list.draw(SCREEN)
         self.enemy_list.draw(SCREEN)
         self.special_blocks.draw(SCREEN)
