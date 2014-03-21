@@ -19,6 +19,13 @@ from time import time
 from random import randint
 from constants import *
 
+
+
+#######################################
+#                                     #
+#     Player                          #
+#                                     #
+#######################################
 class Player(pygame.sprite.Sprite):
 
     #initialize these variables
@@ -150,6 +157,11 @@ class Player(pygame.sprite.Sprite):
     def stopjump(self):
         self.change_y = self.change_y / 2 #contols the way the jump handles when you release space bar
 
+#######################################
+#                                     #
+#    Projectiles                      #
+#                                     #
+#######################################
 class Bullet(pygame.sprite.Sprite):
     """A class for Bullet objects"""
     def __init__(self, owner):
@@ -168,7 +180,11 @@ class Bullet(pygame.sprite.Sprite):
         else:
             self.rect.x -= BULLETSPEED
 
-
+#######################################
+#                                     #
+#    Platform                         #
+#                                     #
+#######################################
 class Platform(pygame.sprite.Sprite):
     def __init__(self, size):
         pygame.sprite.Sprite.__init__(self)
@@ -178,6 +194,12 @@ class Platform(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
 
+
+#######################################
+#                                     #
+#       Power Up Blocks               #
+#                                     #
+#######################################
 class GravityBlock(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -223,6 +245,12 @@ class SpeedBlock(pygame.sprite.Sprite):
 
         self.image.fill((180, self.green, 20))
 
+
+#######################################
+#                                     #
+#           Level Base Class          #
+#                                     #
+#######################################
 class Level(object):
     platform_list = None
     enemy_list = None
@@ -256,6 +284,11 @@ class Level(object):
         for block in self.special_blocks:
             block.rect.x += shift_x
 
+#######################################
+#                                     #
+#        Actual Levels                #
+#                                     #
+#######################################
 class Level01(Level):
     def __init__(self, player):
         Level.__init__(self, player)
