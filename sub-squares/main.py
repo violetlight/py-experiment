@@ -236,11 +236,13 @@ class Level(object):
 class Level01(Level):
     def __init__(self, player):
         Level.__init__(self, player)
+        self.level_limit = -1000
 
         level = [[210, 70, 500, 500],  #a list of platform rect-style  lists
                 [210, 70, 200, 400],
                 [210, 70, 600, 300],
                 [210, 70, 100, 100],
+                [420, 70, 1000, SCREENH/2],
                 ]
         for platform in level:  #for each element of level, create a platform
             block = Platform((platform[0], platform[1]))
@@ -261,13 +263,43 @@ class Level01(Level):
         speedblock.player = self.player
         self.special_blocks.add(gravityblock, speedblock)
 
+class Level02(Level):
+    def __init__(self, player):
+        Level.__init__(self, player)
+        self.level_limit = -1000
+
+        level = [[210, 70, 520, 400],  #a list of platform rect-style  lists
+                [210, 70, 200, 400],
+                [210, 70, 600, 300],
+                [210, 70, 100, 100],
+                [420, 70, 1000, SCREENH/2],
+                ]
+        for platform in level:  #for each element of level, create a platform
+            block = Platform((platform[0], platform[1]))
+            block.rect.x = platform[2]
+            block.rect.y = platform[3]
+            block.player = self.player
+            self.platform_list.add(block) #and add it to platform list
+
+        #Create gravity block and add it to the special_blocks list
+        gravityblock = GravityBlock()
+        gravityblock.rect.x = 250
+        gravityblock.rect.y = 336
+        gravityblock.player = self.player
+
+        speedblock = SpeedBlock()
+        speedblock.rect.x = 600
+        speedblock.rect.y = 250
+        speedblock.player = self.player
+        self.special_blocks.add(gravityblock, speedblock)
+
+
 
 def main():
     #pygame.init()
 
     player = Player((300,300))
-    level_list = []
-    level_list.append(Level01(player))
+    level_list = [Level01(player), Level02(player)]
 
     #current level number
     current_level_no = 0
@@ -321,6 +353,14 @@ def main():
             diff = 120 - player.rect.x
             player.rect.x = 120
             current_level.shift_world(diff)
+
+        current_position = player.rect.x + current_level.world_shift
+        if current_position < current_level.level_limit:
+            player.rect.x = 120
+            if current_level_no < len(level_list) - 1:
+                current_level_no += 1
+                current_level = level_list[current_level_no]
+                player.level = current_level
 
         current_level.draw(SCREEN)
         active_sprite_list.draw(SCREEN)
