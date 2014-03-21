@@ -292,7 +292,8 @@ class Level(object):
 class Level01(Level):
     def __init__(self, player):
         Level.__init__(self, player)
-        self.level_limit = -1000
+        self.level_limit_r = -1000
+        self.level_limit_l = 1000
 
         # a lsit of platforms........
         #           width  X     Y  of top left
@@ -335,7 +336,8 @@ class Level01(Level):
 class Level02(Level):
     def __init__(self, player):
         Level.__init__(self, player)
-        self.level_limit = -1000
+        self.level_limit_r = -1000
+        self.level_limit_l = 1000
 
         level = [[110, 70, 520, 400],  #a list of platform rect-style  lists
                 [110, 70, 200, 400],
@@ -358,8 +360,8 @@ class Level02(Level):
 
         #creates a speed powerup block and adds it to the list
         speedblock = SpeedBlock()
-        speedblock.rect.x = 600
-        speedblock.rect.y = 250
+        speedblock.rect.x = -100
+        speedblock.rect.y = SCREENH - 77
         speedblock.player = self.player
         self.special_blocks.add(gravityblock, speedblock)
 
@@ -456,13 +458,21 @@ def main():
 
         #current position is the player position relative to the screen offset by the amount the world is shifted by
         current_position = player.rect.x + current_level.world_shift
-        if current_position < current_level.level_limit: #if current position is less than the level limit
+        if current_position < current_level.level_limit_r: #if current position is less than the level limit
             if player.rect.x == 500: #prevents that annoying math issue that was causing it to switch when you retraced your steps
                 player.rect.x = 120#put player at left side
                 if current_level_no < len(level_list) - 1:#if there's another level in the list after this one
                     current_level_no += 1              # increment current level counter
                     current_level = level_list[current_level_no] #and switch to it
                     player.level = current_level #update player.level property
+
+        if current_position > current_level.level_limit_l:
+            if player.rect.y <= 125:
+                player.rect.x = 500
+                if level_list.pop():
+                    current_level_no -= 1
+                    current_level = level_list[current_level_no]
+                    player.level = current_level
 
         for bullet in current_level.bullet_list: #iterate over the bullets (which are kept track of in the level... maybe that will change)
             ###check for collision with ENEMY###
