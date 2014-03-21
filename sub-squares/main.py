@@ -39,6 +39,7 @@ class Player(pygame.sprite.Sprite):
         self.facing = 'right'
         self.effects = []
 
+        #At 1, this is essentially inactive. to slow, lower than 1, to speed up, higher than 1
         self.speedmodifier = 1
 
         #default gravity amount
@@ -144,7 +145,7 @@ class Player(pygame.sprite.Sprite):
         self.change_x = 0
 
     def stopjump(self):
-        self.change_y = -2.5
+        self.change_y = self.change_y / 2
 
 class Platform(pygame.sprite.Sprite):
     def __init__(self, size):
