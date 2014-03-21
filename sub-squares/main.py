@@ -221,13 +221,6 @@ class Level(object):
         self.enemy_list.update() # and every enemy object ... not yet used though--so empty
         self.special_blocks.update() #update special blocks
 
-    def draw(self, screen):
-        screen.fill(WHITE)
-
-        self.platform_list.draw(screen) #draw every platform based on their image and rect
-        self.enemy_list.draw(screen) #   and enemies if they existed
-        self.special_blocks.draw(screen)
-
     def shift_world(self, shift_x):
         self.world_shift += shift_x
         for platform in self.platform_list:
@@ -267,6 +260,13 @@ class Level01(Level):
         speedblock.player = self.player
         self.special_blocks.add(gravityblock, speedblock)
 
+    def draw(self):
+
+        SCREEN.fill(WHITE)
+        self.platform_list.draw(SCREEN)
+        self.enemy_list.draw(SCREEN)
+        self.special_blocks.draw(SCREEN)
+
 class Level02(Level):
     def __init__(self, player):
         Level.__init__(self, player)
@@ -297,6 +297,13 @@ class Level02(Level):
         speedblock.rect.y = 250
         speedblock.player = self.player
         self.special_blocks.add(gravityblock, speedblock)
+
+    def draw(self):
+
+        SCREEN.fill(GREEN)
+        self.platform_list.draw(SCREEN)
+        self.enemy_list.draw(SCREEN)
+        self.special_blocks.draw(SCREEN)
 
 
 
@@ -371,7 +378,7 @@ def main():
                 current_level = level_list[current_level_no]
                 player.level = current_level
 
-        current_level.draw(SCREEN)
+        current_level.draw()
         active_sprite_list.draw(SCREEN)
 
         CLOCK.tick(30)
