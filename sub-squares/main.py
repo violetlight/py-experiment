@@ -384,7 +384,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 bullet = Bullet(player)
                 bullet.rect.x = player.rect.right     #adjust bullet origin
-                bullet.rect.y = player.rect.y * 1.25  #       here
+                bullet.rect.y = player.rect.y + player.rect.height / 2  #       here
                 #current_level.all_sprites_list.add(bullet)
                 current_level.bullet_list.add(bullet)
 
