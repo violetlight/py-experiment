@@ -419,12 +419,17 @@ def main():
                 player.level = current_level #update player.level property
 
         for bullet in current_level.bullet_list: #iterate over the bullets (which are kept track of in the level... maybe that will change)
+            ###check for collision with ENEMY###
             block_hit_list = pygame.sprite.spritecollide(bullet, current_level.enemy_list, False) #see if it collided with an enemy (none yet)
             for block in block_hit_list:#if it did, remove the bullet
                 current_level.bullet_list.remove(bullet)
             if bullet.rect.x < 0 or bullet.rect.x > SCREENW: #if it goes offscreen
                 current_level.bullet_list.remove(bullet)  #    remove       it
 
+            ###Check for collision with Platforms###
+            block_hit_list = pygame.sprite.spritecollide(bullet, current_level.platform_list, False)
+            for block in block_hit_list:
+                current_level.bullet_list.remove(bullet)
 
         current_level.draw()  #call draw function from current level
         active_sprite_list.draw(SCREEN) #if you call a pygame.sprite.Group.draw() method you must pass it the surface to draw to
