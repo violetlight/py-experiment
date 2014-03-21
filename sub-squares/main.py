@@ -143,6 +143,9 @@ class Player(pygame.sprite.Sprite):
     def stop(self):
         self.change_x = 0
 
+    def stopjump(self):
+        self.change_y = -2.5
+
 class Platform(pygame.sprite.Sprite):
     def __init__(self, size):
         pygame.sprite.Sprite.__init__(self)
@@ -268,11 +271,11 @@ class Level02(Level):
         Level.__init__(self, player)
         self.level_limit = -1000
 
-        level = [[210, 70, 520, 400],  #a list of platform rect-style  lists
-                [210, 70, 200, 400],
-                [210, 70, 600, 300],
-                [210, 70, 100, 100],
-                [420, 70, 1000, SCREENH/2],
+        level = [[110, 70, 520, 400],  #a list of platform rect-style  lists
+                [110, 70, 200, 400],
+                [110, 70, 600, 300],
+                [110, 70, 100, 100],
+                [120, 70, 1000, SCREENH/2],
                 ]
         for platform in level:  #for each element of level, create a platform
             block = Platform((platform[0], platform[1]))
@@ -287,6 +290,7 @@ class Level02(Level):
         gravityblock.rect.y = 336
         gravityblock.player = self.player
 
+        #creates a speed powerup block and adds it to the list
         speedblock = SpeedBlock()
         speedblock.rect.x = 600
         speedblock.rect.y = 250
@@ -319,6 +323,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+
+            #call player methods based on keyboard input
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     player.go_left()
@@ -332,6 +338,8 @@ def main():
                     player.stop()
                 if event.key == pygame.K_RIGHT and player.change_x > 0:
                     player.stop()
+                if event.key == pygame.K_SPACE and player.change_y < 0:
+                    player.stopjump() # if player releases space it calls stopjump, player can control jump amount
 
         active_sprite_list.update()
 
