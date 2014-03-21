@@ -2,9 +2,9 @@ import pygame
 
 pygame.init()
 #######################################
-#
-#        GAME SETTINGS
-#
+#                                     #
+#        GAME SETTINGS                #
+#                                     #
 #######################################
 
 CLOCK = pygame.time.Clock()
@@ -13,11 +13,12 @@ SCREEN = pygame.display.set_mode(SCREENSIZE)
 PLAYERSIZE = PLAYERW, PLAYERH = 32, 96
 BULLETSPEED = 20
 BULLETSIZE = (10, 4)
+PLATFORMH = 35
 
 #######################################
-#
-#        COLORS
-#
+#                                     #
+#        COLORS                       #
+#                                     #
 #######################################
 
 BLACK = ( 35, 35,  35)

@@ -294,16 +294,19 @@ class Level01(Level):
         Level.__init__(self, player)
         self.level_limit = -1000
 
-        level = [[210, 70, 500, 500],  #a list of platform rect-style  lists
-                [210, 70, 200, 400],
-                [210, 70, 600, 300],
-                [210, 70, 100, 100],
-                [420, 70, 1000, SCREENH/2],
+        # a lsit of platforms........
+        #           width  X     Y  of top left
+        platforms = [[210, 500, 500],
+                [210, 200, 400],
+                [210, 600, 300],
+                [210, 100, 100],
+                [420, 1000, SCREENH/2],
+                [600,   0,  SCREENH-PLATFORMH]
                 ]
-        for platform in level:  #for each element of level, create a platform
-            block = Platform((platform[0], platform[1]))
-            block.rect.x = platform[2]
-            block.rect.y = platform[3]
+        for platform in platforms:  #for each element of level, create a platform
+            block = Platform((platform[0], PLATFORMH))
+            block.rect.x = platform[1]
+            block.rect.y = platform[2]
             block.player = self.player
             self.platform_list.add(block) #and add it to platform list
 
