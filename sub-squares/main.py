@@ -397,8 +397,6 @@ def main():
     done = False
 
     while not done:
-        print(player.rect.x)
-        print(current_level.world_shift)
         SCREEN.blit(background, (0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
