@@ -397,6 +397,8 @@ def main():
     done = False
 
     while not done:
+        print(player.rect.x)
+        print(current_level.world_shift)
         SCREEN.blit(background, (0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -435,11 +437,11 @@ def main():
 
         current_level.update()
 
-        if player.rect.right > SCREENW:
-            player.rect.right = SCREENW
+        #if player.rect.right > SCREENW:
+            #player.rect.right = SCREENW
 
-        if player.rect.left < 0:
-            player.rect.left = 0
+        #if player.rect.left < 0:
+            #player.rect.left = 0
 
         if player.rect.x >= 500:
             diff = player.rect.x - 500
@@ -454,11 +456,12 @@ def main():
         #current position is the player position relative to the screen offset by the amount the world is shifted by
         current_position = player.rect.x + current_level.world_shift
         if current_position < current_level.level_limit: #if current position is less than the level limit
-            player.rect.x = 120#put player at left side
-            if current_level_no < len(level_list) - 1:#if there's another level in the list after this one
-                current_level_no += 1              # increment current level counter
-                current_level = level_list[current_level_no] #and switch to it
-                player.level = current_level #update player.level property
+            if player.rect.x == 500: #prevents that annoying math issue that was causing it to switch when you retraced your steps
+                player.rect.x = 120#put player at left side
+                if current_level_no < len(level_list) - 1:#if there's another level in the list after this one
+                    current_level_no += 1              # increment current level counter
+                    current_level = level_list[current_level_no] #and switch to it
+                    player.level = current_level #update player.level property
 
         for bullet in current_level.bullet_list: #iterate over the bullets (which are kept track of in the level... maybe that will change)
             ###check for collision with ENEMY###
