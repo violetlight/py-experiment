@@ -10,7 +10,8 @@
 #  transform player's image based on direction (flip if left or right)
 #
 #    change the paths so they don't care if it's unix-like or windows
-
+#
+#      Some kind of Enemy(s) must be made
 from __future__ import print_function
 import pygame
 import sys
@@ -30,7 +31,7 @@ class Player(pygame.sprite.Sprite):
 
 
         #player image
-        self.image = pygame.image.load('../images/woman.png')
+        self.image = pygame.image.load('../images/trent.png')
         #self.image = pygame.Surface(PLAYERSIZE)
         #self.image.fill(RED)
 
@@ -147,7 +148,7 @@ class Player(pygame.sprite.Sprite):
         self.change_x = 0
 
     def stopjump(self):
-        self.change_y = self.change_y / 2
+        self.change_y = self.change_y / 2 #contols the way the jump handles when you release space bar
 
 class Bullet(pygame.sprite.Sprite):
     """A class for Bullet objects"""
@@ -382,8 +383,8 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 bullet = Bullet(player)
-                bullet.rect.x = player.rect.right
-                bullet.rect.y = player.rect.y * 1.25
+                bullet.rect.x = player.rect.right     #adjust bullet origin
+                bullet.rect.y = player.rect.y * 1.25  #       here
                 #current_level.all_sprites_list.add(bullet)
                 current_level.bullet_list.add(bullet)
 
@@ -408,26 +409,25 @@ def main():
             player.rect.x = 120
             current_level.shift_world(diff)
 
+        #current position is the player position relative to the screen offset by the amount the world is shifted by
         current_position = player.rect.x + current_level.world_shift
-        if current_position < current_level.level_limit:
-            player.rect.x = 120
-            if current_level_no < len(level_list) - 1:
-                current_level_no += 1
-                current_level = level_list[current_level_no]
-                player.level = current_level
+        if current_position < current_level.level_limit: #if current position is less than the level limit
+            player.rect.x = 120#put player at left side
+            if current_level_no < len(level_list) - 1:#if there's another level in the list after this one
+                current_level_no += 1              # increment current level counter
+                current_level = level_list[current_level_no] #and switch to it
+                player.level = current_level #update player.level property
 
-        for bullet in current_level.bullet_list:
-            block_hit_list = pygame.sprite.spritecollide(bullet, current_level.enemy_list, False)
-            for block in block_hit_list:
+        for bullet in current_level.bullet_list: #iterate over the bullets (which are kept track of in the level... maybe that will change)
+            block_hit_list = pygame.sprite.spritecollide(bullet, current_level.enemy_list, False) #see if it collided with an enemy (none yet)
+            for block in block_hit_list:#if it did, remove the bullet
                 current_level.bullet_list.remove(bullet)
-                #current_level.all_sprites_list.remove(bullet)
-            if bullet.rect.x < 0 or bullet.rect.x > SCREENW:
-                current_level.bullet_list.remove(bullet)
-                #current_level.all_sprites_list.remove(bullet)
+            if bullet.rect.x < 0 or bullet.rect.x > SCREENW: #if it goes offscreen
+                current_level.bullet_list.remove(bullet)  #    remove       it
 
 
-        current_level.draw()
-        active_sprite_list.draw(SCREEN)
+        current_level.draw()  #call draw function from current level
+        active_sprite_list.draw(SCREEN) #if you call a pygame.sprite.Group.draw() method you must pass it the surface to draw to
 
         CLOCK.tick(30)
 
