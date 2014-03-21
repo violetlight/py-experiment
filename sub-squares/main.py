@@ -99,7 +99,7 @@ class Player(pygame.sprite.Sprite):
                         self.speedmodifier = 1  #reset speed
                         self.effects.remove(effect)     #remove effect
 
-                if effect == 'low_gravity':
+                if effect == 'low_gravity':          #same model as above..
                     if time() - self.grav_start > 5:
                         self.grav_amount = .35
                         self.effects.remove(effect)
@@ -203,6 +203,7 @@ class Level(object):
     special_blocks = None
 
     background = None
+    world_shift = 0
 
     def __init__(self, player):
 
@@ -222,6 +223,15 @@ class Level(object):
         self.platform_list.draw(screen) #draw every platform based on their image and rect
         self.enemy_list.draw(screen) #   and enemies if they existed
         self.special_blocks.draw(screen)
+
+    def shift_world(self, shift_x):
+        self.world_shift += shift_x
+        for platform in self.platform_list:
+            platform.rect.x += shift_x
+        for enemy in self.enemy_list:
+            enemy.rect.x += shift_x
+        for block in self.special_blocks:
+            block.rect.x += shift_x
 
 class Level01(Level):
     def __init__(self, player):
@@ -301,6 +311,16 @@ def main():
 
         if player.rect.left < 0:
             player.rect.left = 0
+
+        if player.rect.x >= 500:
+            diff = player.rect.x - 500
+            player.rect.x = 500
+            current_level.shift_world(-diff)
+
+        if player.rect.x <= 120:
+            diff = 120 - player.rect.x
+            player.rect.x = 120
+            current_level.shift_world(diff)
 
         current_level.draw(SCREEN)
         active_sprite_list.draw(SCREEN)
