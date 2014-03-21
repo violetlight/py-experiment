@@ -35,6 +35,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = pos[0]
         self.rect.y = pos[1]
 
+        self.facing = 'right'
+
         #default gravity amount
         self.grav_amount = .35
 
@@ -101,9 +103,15 @@ class Player(pygame.sprite.Sprite):
     #player controlled movement
     def go_left(self):
         self.change_x = -6
+        if self.facing == 'right':
+            self.image = pygame.transform.flip(self.image, 1, 0)
+            self.facing = 'left'
 
     def go_right(self):
         self.change_x = 6
+        if self.facing == 'left':
+            self.image = pygame.transform.flip(self.image, 1, 0)
+            self.facing = 'right'
 
     def stop(self):
         self.change_x = 0
