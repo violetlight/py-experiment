@@ -283,6 +283,7 @@ class Level(object):
             enemy.rect.x += shift_x
         for block in self.special_blocks:
             block.rect.x += shift_x
+        self.bgrect.x += shift_x
 
 #######################################
 #                                     #
