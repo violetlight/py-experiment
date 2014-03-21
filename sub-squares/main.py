@@ -4,10 +4,12 @@
 #TO DO:
 #   seperate level and platforms into their own module,
 #  it really needs to be cleaned up.
+#                   work out what could be its own module and
+#               what other classes they depend on.. this could be very circular
 #
 #  transform player's image based on direction (flip if left or right)
 #
-
+#    change the paths so they don't care if it's unix-like or windows
 
 from __future__ import print_function
 import pygame
@@ -148,20 +150,22 @@ class Player(pygame.sprite.Sprite):
         self.change_y = self.change_y / 2
 
 class Bullet(pygame.sprite.Sprite):
+    """A class for Bullet objects"""
     def __init__(self, owner):
         pygame.sprite.Sprite.__init__(self)
 
         self.owner = owner
+        #To get the constant direction of the bullet, get the direction that the person who shot it was facing when they did
         self.direction = self.owner.facing
-        self.image = pygame.Surface((4, 10))
-        self.image.fill(BULLETCOLOR)
+        self.image = pygame.Surface((4, 10)) #4,10 is the size
+        self.image.fill(BULLETCOLOR) #a blackish color
         self.rect = self.image.get_rect()
 
-    def update(self):
+    def update(self): #moves bullet in direction
         if self.direction == 'right':
-            self.rect.x += 10
+            self.rect.x += BULLETSPEED
         else:
-            self.rect.x -= 10
+            self.rect.x -= BULLETSPEED
 
 
 class Platform(pygame.sprite.Sprite):
@@ -178,8 +182,8 @@ class GravityBlock(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface((32,32))
-        self.blue = 100
-        self.blueup = True
+        self.blue = 100 # used in color fading
+        self.blueup = True # used for direction in color fading
         self.image.fill((20, 45, self.blue))
         self.rect = self.image.get_rect()
 
@@ -378,8 +382,8 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 bullet = Bullet(player)
-                bullet.rect.x = player.rect.x
-                bullet.rect.y = player.rect.y
+                bullet.rect.x = player.rect.right
+                bullet.rect.y = player.rect.y * 1.25
                 #current_level.all_sprites_list.add(bullet)
                 current_level.bullet_list.add(bullet)
 
@@ -420,7 +424,7 @@ def main():
             if bullet.rect.x < 0 or bullet.rect.x > SCREENW:
                 current_level.bullet_list.remove(bullet)
                 #current_level.all_sprites_list.remove(bullet)
-        
+
 
         current_level.draw()
         active_sprite_list.draw(SCREEN)

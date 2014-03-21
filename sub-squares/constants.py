@@ -11,6 +11,7 @@ CLOCK = pygame.time.Clock()
 SCREENSIZE = SCREENW, SCREENH = 800, 600
 SCREEN = pygame.display.set_mode(SCREENSIZE)
 PLAYERSIZE = PLAYERW, PLAYERH = 32, 96
+BULLETSPEED = 20
 
 
 #######################################
