@@ -2,8 +2,8 @@
 
 #################################################
 #TO DO:
-#   seperate level and platforms into their own module, 
-#  it really needs to be cleaned up. 
+#   seperate level and platforms into their own module,
+#  it really needs to be cleaned up.
 #
 #  transform player's image based on direction (flip if left or right)
 #
@@ -54,14 +54,20 @@ class Player(pygame.sprite.Sprite):
         ###check for collision with gravity_blocks###
         block_hit_list = pygame.sprite.spritecollide(self, self.level.special_blocks, False)
         for block in block_hit_list:
+
+            ###Gravity Powerup Block###
             if isinstance(block, GravityBlock):
-                self.grav_amount = .15
-                self.level.special_blocks.remove(block)
+                self.grav_start = time() #Start timer for effect
+                self.grav_amount = .15   #Status effected
+                self.effects.append('low_gravity') #Append to effects list
+                self.level.special_blocks.remove(block) #Remove the block you got
+
+            ###Speed Powerup Block###
             if isinstance(block, SpeedBlock):
-                self.speed_start = time()
-                self.speedmodifier = 2
-                self.effects.append('speed')
-                self.level.special_blocks.remove(block)
+                self.speed_start = time() #Start timer for effect
+                self.speedmodifier = 2    #Status affected
+                self.effects.append('speed') #Append to effects list
+                self.level.special_blocks.remove(block) #Remove the block you got
 
         ###check for collisions with platforms###
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
@@ -87,10 +93,16 @@ class Player(pygame.sprite.Sprite):
 
         ###check for status effects###
         if self.effects:
-            if self.effects[0] == 'speed':
-                if time() - self.speed_start > 5:
-                    self.speedmodifier = 1
-                    self.effects.pop()
+            for effect in self.effects:
+                if effect == 'speed':
+                    if time() - self.speed_start > 5: #checks for five seconds since the effect started, if it has been longer than 5 seconds...
+                        self.speedmodifier = 1  #reset speed
+                        self.effects.remove(effect)     #remove effect
+
+                if effect == 'low_gravity':
+                    if time() - self.grav_start > 5:
+                        self.grav_amount = .35
+                        self.effects.remove(effect)
 
     def calc_grav(self, amount):
         if self.change_y == 0:#if change_y is nothing...
