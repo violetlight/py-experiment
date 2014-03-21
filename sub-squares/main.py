@@ -158,7 +158,7 @@ class Bullet(pygame.sprite.Sprite):
         self.owner = owner
         #To get the constant direction of the bullet, get the direction that the person who shot it was facing when they did
         self.direction = self.owner.facing
-        self.image = pygame.Surface((4, 10)) #4,10 is the size
+        self.image = pygame.Surface(BULLETSIZE) #4,10 is the size
         self.image.fill(BULLETCOLOR) #a blackish color
         self.rect = self.image.get_rect()
 
