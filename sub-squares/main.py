@@ -100,39 +100,25 @@ def main():
         ##########################
         #  World shifting        #
         ##########################
-        if player.rect.x >= 500:       #Right
-            diff = player.rect.x - 500
-            player.rect.x = 500
-            current_level.shift_world(-diff)
-
-        if player.rect.x <= 120:       #Left
-            diff = 120 - player.rect.x
-            player.rect.x = 120
-            current_level.shift_world(diff)
-
-
-        ##########################
-        # Level Switching        #
-        ##########################
-
-        #current position is the player position relative to the screen offset by the amount the world is shifted by
         current_position = player.rect.x + current_level.world_shift
-        if current_position < current_level.level_limit_r: #if current position is less than the level limit
-            if player.rect.x == 500: #prevents that annoying math issue that was causing it to switch when you retraced your steps
-                player.rect.x = 120#put player at left side
-                if current_level_no < len(level_list) - 1:#if there's another level in the list after this one
-                    current_level_no += 1              # increment current level counter
-                    current_level = level_list[current_level_no] #and switch to it
-                    player.level = current_level #update player.level property
+        ### RIGHT SIDE ###
+        if player.rect.x >= 500:
+            if current_position < current_level.level_limit_r:
+                pass
+            else:
+                diff = player.rect.x - 500
+                player.rect.x = 500
+                current_level.shift_world(-diff)
+        ### LEFT SIDE ###
+        if player.rect.x <= 120:
+            if current_position > current_level.level_limit_l:
+                if player.rect.x < 0:
+                    player.rect.x = 0
+            else:
+                diff = 120 - player.rect.x
+                player.rect.x = 120
+                current_level.shift_world(diff)
 
-        if current_position > current_level.level_limit_l:
-            if player.rect.x <= 120:
-                if current_level_no - 1 > 0:
-                    player.rect.x = 500
-                    current_level_no -= 1
-                    current_level = level_list[current_level_no]
-                    print("made it inside!!")
-                    player.level = current_level
 
         #########################
         #  D E B U G            #
