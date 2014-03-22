@@ -163,7 +163,7 @@ def main():
         #########################
 
         current_level.draw()  #call draw function from current level
-        active_sprite_list.draw(SCREEN) #if you call a pygame.sprite.Group.draw() method you must pass it the surface to draw to
+        active_sprite_list.draw(SCREEN) # this is wrong, it should write to GAMESURFACE but it doesn't work
 
 
         if current_level != player.level:

@@ -43,5 +43,5 @@ GREEN  = ( 64, 255,  64)
 YELLOW = (227, 215,  50)
 
 BULLETCOLOR = ( 216,  218,  214)
-WALLCOLOR  =  ( 74, 109,  92)
+WALLCOLOR  =  ( 109, 94,  94)
 

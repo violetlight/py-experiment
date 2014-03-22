@@ -176,8 +176,9 @@ class StartScreen(Level):
         self.bgsurf.blit(self.bgimage, self.bgrect)
         self.bgsurfrect = self.bgsurf.get_rect(x=-1200)
 
-        # a list of platforms........
-        #           width  X     Y  of top left
+        ##########################
+        #     platforms          #
+        ##########################
         platforms = [[210, 500, 500],
                 [210, 200, 400],
                 [210, 600, 300],
@@ -210,6 +211,10 @@ class StartScreen(Level):
         self.special_blocks.add(doorblock)
         self.doorlist[doorblock.name] = doorblock
 
+
+    #########################
+    #     draw              #
+    #########################
     def draw(self):
         GAMESURFACE.blit(self.bgsurf, self.bgsurfrect)
         self.platform_list.draw(GAMESURFACE)
@@ -224,8 +229,8 @@ class StartScreen(Level):
 class FirstRoom(Level):
     def __init__(self):
         Level.__init__(self)
-        self.level_limit_r = -500
-        self.level_limit_l = 500
+        self.level_limit_r = -300
+        self.level_limit_l = 400
 
         ##########################
         #  background images     #
@@ -234,9 +239,12 @@ class FirstRoom(Level):
         self.bgimage = pygame.image.load('../images/firstroombg.png')
         self.bgrect = self.bgimage.get_rect()
         self.bgsurf.blit(self.bgimage, self.bgrect)
-        self.bgsurfrect = self.bgsurf.get_rect(x=-600)
+        self.bgsurfrect = self.bgsurf.get_rect(x=-300)
 
 
+        ##########################
+        #    platforms           #
+        ##########################
         platforms = [[110, 70, 520, 400],  #a list of platform rect-style  lists
                 [110, 70, 200, 400],
                 [110, 70, 600, 300],
@@ -269,6 +277,10 @@ class FirstRoom(Level):
         self.special_blocks.add(self.doorblock)
         self.doorlist[self.doorblock.name] = self.doorblock
 
+
+    ########################
+    #   drawing            #
+    ########################
     def draw(self):
 
         GAMESURFACE.blit(self.bgsurf, self.bgsurfrect)
