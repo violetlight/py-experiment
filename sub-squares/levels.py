@@ -241,7 +241,7 @@ class Level02(Level):
         ########################
         #   event blocks       #
         ########################
-        self.doorblock = DoorBlock("first door", (600,SCREENH-32-128), "starting", "starting door")
+        self.doorblock = DoorBlock("first door", (300,SCREENH-128), "starting", "starting door")
         self.special_blocks.add(self.doorblock)
         self.doorlist[self.doorblock.name] = self.doorblock
 

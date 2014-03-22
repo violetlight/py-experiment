@@ -169,7 +169,7 @@ def main():
         if current_level != player.level:
             current_level = player.level
 
-        CLOCK.tick(30)
+        CLOCK.tick(FPS)
         pygame.display.flip()
 
     pygame.quit()

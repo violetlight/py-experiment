@@ -8,6 +8,7 @@ pygame.init()
 #######################################
 
 CLOCK = pygame.time.Clock()
+FPS = 60
 SCREENSIZE = SCREENW, SCREENH = 800, 600
 SCREEN = pygame.display.set_mode(SCREENSIZE)
 SCREENRECT = SCREEN.get_rect()
