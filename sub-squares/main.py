@@ -51,6 +51,11 @@ def main():
 
     done = False
 
+
+
+    ############################
+    #  INFINITE LOOP ROOT      #
+    ############################
     while not done:
 
 
@@ -61,7 +66,11 @@ def main():
             if event.type == pygame.QUIT:
                 done = True
 
-            #call player methods based on keyboard input
+            ###################################
+            #     Player keyboard input       #
+            ###################################
+
+            ### KEY DOWN ###
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     player.go_left()
@@ -70,6 +79,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     player.jump()
 
+            ### KEY UP ###
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a and player.change_x < 0:
                     player.stop()
@@ -78,6 +88,7 @@ def main():
                 if event.key == pygame.K_SPACE and player.change_y < 0:
                     player.stopjump() # if player releases space it calls stopjump, player can control jump amount
 
+            ### MOUSE BUTTON DOWN ###
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 bullet = Bullet(player)
                 #start bullet from the correct side of the player
@@ -93,13 +104,15 @@ def main():
         ##########################
         #  Call updates          #
         ##########################
-        active_sprite_list.update() #investigate this..
-        current_level.update()
+        active_sprite_list.update() #only player is a member of this group
+        current_level.update() #this update method simply calls platform, enemy, specialblock, and bullet update methods
 
 
         ##########################
         #  World shifting        #
         ##########################
+
+        ### GET CURRENT POS ###
         current_position = player.rect.x + current_level.world_shift
 
         ### RIGHT SIDE ###

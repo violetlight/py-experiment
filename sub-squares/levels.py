@@ -288,7 +288,10 @@ class FirstRoom(Level):
         self.enemy_list.draw(GAMESURFACE)
         self.special_blocks.draw(GAMESURFACE)
         self.bullet_list.draw(GAMESURFACE)
+
+        STATSURFACE.fill((55,55,55))
         SCREEN.blit(GAMESURFACE, GAMESURFRECT)
+        SCREEN.blit(STATSURFACE, STATSURFRECT)
 
 
 class Blank(Level):
