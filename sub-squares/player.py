@@ -1,7 +1,7 @@
 from __future__ import print_function
 from constants import *
 import pygame
-from levels import GravityBlock, SpeedBlock #This will hopefully be changed so that it doesn't need to do this
+from levels import GravityBlock, SpeedBlock, DoorBlock #This will hopefully be changed so that it doesn't need to do this
 from time import time
 
 #######################################
@@ -45,9 +45,9 @@ class Player(pygame.sprite.Sprite):
         #left/right
         self.rect.x += self.change_x
 
-        ################################
-        #  Power Up Block Collision    #
-        ################################
+        ######################################
+        #  Power Up/Event Block Collision    #
+        ######################################
         block_hit_list = pygame.sprite.spritecollide(self, self.level.special_blocks, False)
         for block in block_hit_list:
 
@@ -64,6 +64,11 @@ class Player(pygame.sprite.Sprite):
                 self.speedmodifier = 2    #Status affected
                 self.effects.append('speed') #Append to effects list
                 self.level.special_blocks.remove(block) #Remove the block you got
+
+            ###DOOR###
+            if isinstance(block, DoorBlock):
+                self.level = block.level
+
 
         ###############################
         #   Platform Collision        #
