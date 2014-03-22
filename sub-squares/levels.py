@@ -67,6 +67,30 @@ class SpeedBlock(pygame.sprite.Sprite):
 
         self.image.fill((180, self.green, 20))
 
+#######################################
+#                                     #
+#     Event Blocks                    #
+#                                     #
+#######################################
+
+#####DOOR#####
+class DoorBlock(pygame.sprite.Sprite):
+
+    # takes pos as a tuple and level is a level object
+    def __init__(self, pos, level, visible=True):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.level = level
+        self.image = pygame.Surface((64, 128))
+        self.visible = visible
+        if self.visible:
+            self.image.fill(YELLOW)
+        else:
+            self.image.set_alpha(0)
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+
 
 #######################################
 #                                     #
@@ -114,8 +138,8 @@ class Level(object):
 class Level01(Level):
     def __init__(self):
         Level.__init__(self)
-        self.level_limit_r = -2000
-        self.level_limit_l = 2000
+        self.level_limit_r = -1200
+        self.level_limit_l = 1200
         self.bglist = []
         self.bgimglist = ['../images/lv1bg1sky.png', '../images/lv1bg2mntfar.png', '../images/lv1bg3mntmid.png', '../images/lv1bg4mntnear.png']
 
@@ -143,7 +167,9 @@ class Level01(Level):
             block.rect.y = platform[2]
             self.platform_list.add(block) #and add it to platform list
 
-        #Create gravity block and add it to the special_blocks list
+        #########################
+        #  special blocks       #
+        #########################
         gravityblock = GravityBlock()
         gravityblock.rect.x = 200
         gravityblock.rect.y = 336
@@ -152,7 +178,12 @@ class Level01(Level):
         speedblock.rect.x = 600
         speedblock.rect.y = 250
         self.special_blocks.add(gravityblock, speedblock)
-        #self.all_sprites_list.add(gravityblock, speedblock)
+
+        #########################
+        #  event blocks         #
+        #########################
+        doorblock = DoorBlock((200, SCREENH-160), None)
+        self.special_blocks.add(doorblock)
 
     def draw(self):
         SCREEN.fill(WHITE)
@@ -161,7 +192,6 @@ class Level01(Level):
         self.enemy_list.draw(SCREEN)
         self.special_blocks.draw(SCREEN)
         self.bullet_list.draw(SCREEN)
-        #self.all_sprites_list.draw(SCREEN)
 
 class Level02(Level):
     def __init__(self):

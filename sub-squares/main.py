@@ -127,12 +127,13 @@ def main():
 
         if current_position > current_level.level_limit_l:
             if player.rect.x <= 120:
-                player.rect.x = 500
-                if level_list.pop():
+                if current_level_no - 1 > 0:
+                    player.rect.x = 500
                     current_level_no -= 1
                     current_level = level_list[current_level_no]
+                    print("made it inside!!")
                     player.level = current_level
-        
+
         #########################
         #  D E B U G            #
         #########################
@@ -167,6 +168,9 @@ def main():
         current_level.draw()  #call draw function from current level
         active_sprite_list.draw(SCREEN) #if you call a pygame.sprite.Group.draw() method you must pass it the surface to draw to
 
+
+        if current_level != player.level:
+            current_level = player.level
 
         CLOCK.tick(30)
         pygame.display.flip()

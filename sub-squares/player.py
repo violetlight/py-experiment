@@ -45,25 +45,29 @@ class Player(pygame.sprite.Sprite):
         #left/right
         self.rect.x += self.change_x
 
-        ###check for collision with gravity_blocks###
+        ################################
+        #  Power Up Block Collision    #
+        ################################
         block_hit_list = pygame.sprite.spritecollide(self, self.level.special_blocks, False)
         for block in block_hit_list:
 
-            ###Gravity Powerup Block###
+            ###GRAVITY###
             if isinstance(block, GravityBlock):
                 self.grav_start = time() #Start timer for effect
                 self.grav_amount = .15   #Status effected
                 self.effects.append('low_gravity') #Append to effects list
                 self.level.special_blocks.remove(block) #Remove the block you got
 
-            ###Speed Powerup Block###
+            ###SPEED UP###
             if isinstance(block, SpeedBlock):
                 self.speed_start = time() #Start timer for effect
                 self.speedmodifier = 2    #Status affected
                 self.effects.append('speed') #Append to effects list
                 self.level.special_blocks.remove(block) #Remove the block you got
 
-        ###check for collisions with platforms###
+        ###############################
+        #   Platform Collision        #
+        ###############################
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
             if self.change_x > 0: #if moving right
