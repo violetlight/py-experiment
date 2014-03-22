@@ -114,8 +114,8 @@ class Level(object):
 class Level01(Level):
     def __init__(self):
         Level.__init__(self)
-        self.level_limit_r = -1000
-        self.level_limit_l = 1000
+        self.level_limit_r = -2000
+        self.level_limit_l = 2000
         self.bglist = []
         self.bgimglist = ['../images/lv1bg1sky.png', '../images/lv1bg2mntfar.png', '../images/lv1bg3mntmid.png', '../images/lv1bg4mntnear.png']
 

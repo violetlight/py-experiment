@@ -132,10 +132,14 @@ def main():
                     current_level_no -= 1
                     current_level = level_list[current_level_no]
                     player.level = current_level
-
+        
+        #########################
+        #  D E B U G            #
+        #########################
         print("Current position", current_position)
         print("Left level limit", current_level.level_limit_l)
         print("Right level limit", current_level.level_limit_r)
+
 
         ##########################
         #  Bullet collision      #
