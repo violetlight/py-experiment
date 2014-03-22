@@ -69,7 +69,8 @@ class Player(pygame.sprite.Sprite):
 
             ###DOOR###
             if isinstance(block, DoorBlock):
-                self.level = mainlist[block.level] 
+                self.rect.bottomleft = mainlist[block.room].doorlist[block.linkeddoor].rect.bottomleft
+                self.level = mainlist[block.room] 
 
 
         ###############################

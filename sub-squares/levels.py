@@ -77,10 +77,12 @@ class SpeedBlock(pygame.sprite.Sprite):
 class DoorBlock(pygame.sprite.Sprite):
 
     # takes pos as a tuple and level is a level object
-    def __init__(self, pos, level, visible=True):
+    def __init__(self, name, pos, room, linkeddoor, visible=True):
         pygame.sprite.Sprite.__init__(self)
 
-        self.level = level
+        self.name = name
+        self.linkeddoor = linkeddoor
+        self.room = room
         self.image = pygame.Surface((64, 128))
         self.visible = visible
         if self.visible:
@@ -113,6 +115,7 @@ class Level(object):
         self.bullet_list = pygame.sprite.Group()
         self.bgsurfrect = pygame.Rect((0,0,0,0)) #needs to be initialized for now
         self.roomlinks = []
+        self.doorlist = {}
 
     def update(self):
         self.platform_list.update() #call update on every platform object
@@ -183,8 +186,9 @@ class Level01(Level):
         #########################
         #  event blocks         #
         #########################
-        doorblock = DoorBlock((200, SCREENH-160), "first room")
+        doorblock = DoorBlock("starting door", (200, SCREENH-160), "first room", "first door")
         self.special_blocks.add(doorblock)
+        self.doorlist[doorblock.name] = doorblock
 
     def draw(self):
         SCREEN.fill(WHITE)
@@ -226,8 +230,9 @@ class Level02(Level):
         ########################
         #   event blocks       #
         ########################
-        self.doorblock = DoorBlock((600,172), "starting")
+        self.doorblock = DoorBlock("first door", (600,SCREENH-32-128), "starting", "starting door")
         self.special_blocks.add(self.doorblock)
+        self.doorlist[self.doorblock.name] = self.doorblock
 
     def draw(self):
 
