@@ -150,7 +150,7 @@ class Level01(Level):
         self.bgimage = pygame.image.load('../images/level1bg.png')
         self.bgrect = self.bgimage.get_rect()
         self.bgsurf.blit(self.bgimage, self.bgrect)
-        self.bgsurfrect = self.bgsurf.get_rect(x=-1500)
+        self.bgsurfrect = self.bgsurf.get_rect(x=-1200)
 
         # a list of platforms........
         #           width  X     Y  of top left
