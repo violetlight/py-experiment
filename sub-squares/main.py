@@ -101,26 +101,34 @@ def main():
         #  World shifting        #
         ##########################
         current_position = player.rect.x + current_level.world_shift
+
         ### RIGHT SIDE ###
-        if player.rect.x >= 500:
-            if current_position < current_level.level_limit_r:
-                pass
-            else:
+        if current_position > current_level.level_limit_r and player.shiftingr:
+            if player.rect.x >= 500:
                 diff = player.rect.x - 500
                 player.rect.x = 500
                 current_level.shift_world(-diff)
-        ### LEFT SIDE ###
+        elif current_position <= current_level.level_limit_r:
+            player.shiftingr = False
+        elif player.shiftingr == False:
+            if player.rect.right > SCREENW:
+                player.rect.right = SCREENW
+            if player.rect.x <= 120:
+                player.shiftingr = True
 
-        if current_position < current_level.level_limit_l and player.shifting:
+        ### LEFT SIDE ###
+        if current_position < current_level.level_limit_l and player.shiftingl:
             if player.rect.x <= 120:
                 diff = 120 - player.rect.x
                 player.rect.x = 120
                 current_level.shift_world(diff)
         elif current_position >= current_level.level_limit_l:
-            player.shifting = False
-        elif player.shifting == False:
+            player.shiftingl = False
+        elif player.shiftingl == False:
             if player.rect.x < 0:
                 player.rect.x = 0
+            if player.rect.x >= 500:
+                player.shiftingl = True
 
         #########################
         #  D E B U G            #

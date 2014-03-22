@@ -31,7 +31,8 @@ class Player(pygame.sprite.Sprite):
 
         self.facing = 'right'
         self.effects = []
-        self.shifting = True
+        self.shiftingr = True
+        self.shiftingl = True
 
         #At 1, this is essentially inactive. to slow, lower than 1, to speed up, higher than 1
         self.speedmodifier = 1
