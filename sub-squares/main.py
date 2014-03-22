@@ -78,7 +78,7 @@ def main():
                 if event.key == pygame.K_SPACE and player.change_y < 0:
                     player.stopjump() # if player releases space it calls stopjump, player can control jump amount
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 bullet = Bullet(player)
                 #start bullet from the correct side of the player
                 if player.facing == 'right':

@@ -1,6 +1,7 @@
 from __future__ import print_function
 from constants import *
 import pygame
+from time import time
 
 #######################################
 #                                     #
@@ -85,6 +86,7 @@ class DoorBlock(pygame.sprite.Sprite):
         self.room = room
         self.image = pygame.Surface((64, 128))
         self.visible = visible
+        self.cooldown = "off"
         if self.visible:
             self.image.fill(YELLOW)
         else:
@@ -92,6 +94,15 @@ class DoorBlock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
+
+    def update(self):
+        if self.cooldown == "on":
+            self.timestart = time()
+            self.cooldown = "cooling"
+        elif self.cooldown == "cooling":
+            if time() - self.timestart >= 1:
+                self.cooldown = "off"
+
 
 
 #######################################
