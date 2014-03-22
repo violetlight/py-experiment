@@ -30,6 +30,6 @@ BLUE   = ( 64,  64, 255)
 GREEN  = ( 64, 255,  64)
 YELLOW = (227, 215,  50) 
 
-BULLETCOLOR = ( 16,  18,  14)
+BULLETCOLOR = ( 216,  218,  214)
 WALLCOLOR  =  ( 74, 109,  92)
 

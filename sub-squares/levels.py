@@ -121,10 +121,13 @@ class Level(object):
 
     def __init__(self):
 
+        ### LISTS ###
         self.platform_list = pygame.sprite.Group() #group for platforms
         self.enemy_list = pygame.sprite.Group() # group for enemies.. not yet used
         self.special_blocks = pygame.sprite.Group() #group for gravity blocks
         self.bullet_list = pygame.sprite.Group()
+
+        ### INITIALIZATION ###
         self.bgsurfrect = pygame.Rect((0,0,0,0)) #needs to be initialized for now
         self.roomlinks = []
         self.doorlist = {}
@@ -136,6 +139,10 @@ class Level(object):
         self.bullet_list.update() #might be able to remove all of these
         #self.all_sprites_list.update()
 
+
+    ########################
+    # Shift World method   #
+    ########################
     def shift_world(self, shift_x):
         self.world_shift += shift_x
         for platform in self.platform_list:
@@ -151,7 +158,7 @@ class Level(object):
 #        Actual Levels                #
 #                                     #
 #######################################
-class Level01(Level):
+class StartScreen(Level):
     def __init__(self):
         Level.__init__(self)
         self.level_limit_r = -1200
@@ -198,7 +205,7 @@ class Level01(Level):
         #########################
         #  event blocks         #
         #########################
-        doorblock = DoorBlock("starting door", (200, SCREENH-160), "first room", "first door", auto=True)
+        doorblock = DoorBlock("starting door", (200, SCREENH-160), "first room", "first door")
         self.special_blocks.add(doorblock)
         self.doorlist[doorblock.name] = doorblock
 
@@ -210,7 +217,7 @@ class Level01(Level):
         self.special_blocks.draw(SCREEN)
         self.bullet_list.draw(SCREEN)
 
-class Level02(Level):
+class FirstRoom(Level):
     def __init__(self):
         Level.__init__(self)
         self.level_limit_r = -1000
@@ -275,7 +282,13 @@ class Blank(Level):
         def draw(self):
             pass
 
-mainlist = { "starting" : Level01(),
-             "first room" : Level02(),
+
+#######################################
+#                                     #
+#   mainlist: preinstantiante every   #
+#                  level              #
+#######################################
+mainlist = { "starting" : StartScreen(),
+             "first room" : FirstRoom(),
 
              }
