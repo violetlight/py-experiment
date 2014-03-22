@@ -69,10 +69,11 @@ class Player(pygame.sprite.Sprite):
 
             ###DOOR###
             if isinstance(block, DoorBlock):
-                if pygame.mouse.get_pressed()[2] and block.cooldown == "off":
-                    self.rect.bottomleft = mainlist[block.room].doorlist[block.linkeddoor].rect.bottomleft
-                    mainlist[block.room].doorlist[block.linkeddoor].cooldown = "on"
-                    self.level = mainlist[block.room] 
+                if block.cooldown == "off":
+                    if pygame.mouse.get_pressed()[2] or block.auto:
+                        self.rect.bottomleft = mainlist[block.room].doorlist[block.linkeddoor].rect.bottomleft
+                        mainlist[block.room].doorlist[block.linkeddoor].cooldown = "on"
+                        self.level = mainlist[block.room]
 
 
         ###############################
