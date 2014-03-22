@@ -227,6 +227,16 @@ class FirstRoom(Level):
         self.level_limit_r = -500
         self.level_limit_l = 500
 
+        ##########################
+        #  background images     #
+        ##########################
+        self.bgsurf = pygame.Surface((2000, 600))
+        self.bgimage = pygame.image.load('../images/firstroombg.png')
+        self.bgrect = self.bgimage.get_rect()
+        self.bgsurf.blit(self.bgimage, self.bgrect)
+        self.bgsurfrect = self.bgsurf.get_rect(x=-600)
+
+
         platforms = [[110, 70, 520, 400],  #a list of platform rect-style  lists
                 [110, 70, 200, 400],
                 [110, 70, 600, 300],
@@ -261,7 +271,7 @@ class FirstRoom(Level):
 
     def draw(self):
 
-        GAMESURFACE.fill(BLACK)
+        GAMESURFACE.blit(self.bgsurf, self.bgsurfrect)
         self.platform_list.draw(GAMESURFACE)
         self.enemy_list.draw(GAMESURFACE)
         self.special_blocks.draw(GAMESURFACE)
