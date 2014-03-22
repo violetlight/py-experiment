@@ -199,13 +199,13 @@ class Level02(Level):
         self.level_limit_r = -1000
         self.level_limit_l = 1000
 
-        level = [[110, 70, 520, 400],  #a list of platform rect-style  lists
+        platforms = [[110, 70, 520, 400],  #a list of platform rect-style  lists
                 [110, 70, 200, 400],
                 [110, 70, 600, 300],
                 [110, 70, 100, 100],
                 [120, 70, 1000, SCREENH/2],
                 ]
-        for platform in level:  #for each element of level, create a platform
+        for platform in platforms:  #for each element of level, create a platform
             block = Platform((platform[0], platform[1]))
             block.rect.x = platform[2]
             block.rect.y = platform[3]
@@ -234,4 +234,21 @@ class Level02(Level):
         #self.all_sprites_list.draw(SCREEN)
 
 
+class Blank(Level):
+    def __init__(self):
+        Level.__init__(self)
+        self.level_limit_r = None
+        self.level_limit_l = None
 
+        ##########################
+        # Background Handling    #
+        ##########################
+        self.background = None
+
+        platforms = []
+
+        for platform in platforms:
+            pass
+
+        def draw(self):
+            pass
