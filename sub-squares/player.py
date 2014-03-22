@@ -31,8 +31,6 @@ class Player(pygame.sprite.Sprite):
 
         self.facing = 'right'
         self.effects = []
-        self.shiftingr = True
-        self.shiftingl = True
 
         #At 1, this is essentially inactive. to slow, lower than 1, to speed up, higher than 1
         self.speedmodifier = 1
@@ -133,7 +131,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y -= 2 #moves back up
 
         #if collided with a platform or if you're at the bottom of the screen, then you are allowed to jump
-        if len(platform_hit_list) > 0 or self.rect.bottom >= SCREENH:
+        if len(platform_hit_list) > 0 or self.rect.bottom >= GAMESURFH:
             self.change_y = -10 #jump.. negative
 
     #player controlled movement

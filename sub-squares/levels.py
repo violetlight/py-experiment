@@ -131,6 +131,8 @@ class Level(object):
         self.bgsurfrect = pygame.Rect((0,0,0,0)) #needs to be initialized for now
         self.roomlinks = []
         self.doorlist = {}
+        self.shiftingr = True
+        self.shiftingl = True
 
     def update(self):
         self.platform_list.update() #call update on every platform object
@@ -209,19 +211,21 @@ class StartScreen(Level):
         self.doorlist[doorblock.name] = doorblock
 
     def draw(self):
-        #SCREEN.fill(WHITE)
         GAMESURFACE.blit(self.bgsurf, self.bgsurfrect)
         self.platform_list.draw(GAMESURFACE)
         self.enemy_list.draw(GAMESURFACE)
         self.special_blocks.draw(GAMESURFACE)
         self.bullet_list.draw(GAMESURFACE)
+
+        STATSURFACE.fill((55,55,55))
         SCREEN.blit(GAMESURFACE, GAMESURFRECT)
+        SCREEN.blit(STATSURFACE, STATSURFRECT)
 
 class FirstRoom(Level):
     def __init__(self):
         Level.__init__(self)
-        self.level_limit_r = -1000
-        self.level_limit_l = 1000
+        self.level_limit_r = -500
+        self.level_limit_l = 500
 
         platforms = [[110, 70, 520, 400],  #a list of platform rect-style  lists
                 [110, 70, 200, 400],
