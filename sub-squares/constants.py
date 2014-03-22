@@ -11,6 +11,7 @@ CLOCK = pygame.time.Clock()
 
 ### TIME AND SPEED ###
 FPS = 60
+PLAYERSPEED = 4
 BULLETSPEED = 20
 
 ### SIZES ###

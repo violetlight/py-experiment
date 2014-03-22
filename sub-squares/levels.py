@@ -239,12 +239,14 @@ class FirstRoom(Level):
             block.rect.y = platform[3]
             self.platform_list.add(block) #and add it to platform list
 
-        #Create gravity block and add it to the special_blocks list
+
+        ########################
+        # powerup blocks       #
+        ########################
         gravityblock = GravityBlock()
         gravityblock.rect.x = 250
         gravityblock.rect.y = 336
 
-        #creates a speed powerup block and adds it to the list
         speedblock = SpeedBlock()
         speedblock.rect.x = -100
         speedblock.rect.y = GAMESURFH - 77
@@ -259,7 +261,7 @@ class FirstRoom(Level):
 
     def draw(self):
 
-        GAMESURFACE.fill(GREEN)
+        GAMESURFACE.fill(BLACK)
         self.platform_list.draw(GAMESURFACE)
         self.enemy_list.draw(GAMESURFACE)
         self.special_blocks.draw(GAMESURFACE)

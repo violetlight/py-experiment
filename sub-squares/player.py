@@ -134,15 +134,17 @@ class Player(pygame.sprite.Sprite):
         if len(platform_hit_list) > 0 or self.rect.bottom >= GAMESURFH:
             self.change_y = -10 #jump.. negative
 
-    #player controlled movement
+    ################################
+    #  KEY - CONTROLLED MOVEMENT   #
+    ################################
     def go_left(self):
-        self.change_x = -6 * self.speedmodifier
+        self.change_x = -PLAYERSPEED * self.speedmodifier
         if self.facing == 'right':
             self.image = pygame.transform.flip(self.image, 1, 0) #flips image based on direction
             self.facing = 'left'
 
     def go_right(self):
-        self.change_x = 6 * self.speedmodifier
+        self.change_x = PLAYERSPEED * self.speedmodifier
         if self.facing == 'left':
             self.image = pygame.transform.flip(self.image, 1, 0) #same thing as above
             self.facing = 'right'
