@@ -70,7 +70,7 @@ class Player(pygame.sprite.Sprite):
             ###DOOR###
             if isinstance(block, DoorBlock):
                 if block.cooldown == "off":
-                    if pygame.mouse.get_pressed()[2] or block.auto:
+                    if pygame.key.get_pressed()[pygame.K_w] or block.auto:
                         self.rect.bottomleft = mainlist[block.room].doorlist[block.linkeddoor].rect.bottomleft
                         mainlist[block.room].doorlist[block.linkeddoor].cooldown = "on"
                         self.level = mainlist[block.room]
@@ -120,9 +120,9 @@ class Player(pygame.sprite.Sprite):
             self.change_y += amount #otherwise, if change_y is anything, add .35 to it (positive numbers represent downward motion)
 
         #if bottom of player is outside of screen and still moving down...
-        if self.rect.y >= SCREENH - self.rect.height and self.change_y >= 0:
+        if self.rect.y >= GAMESURFH - self.rect.height and self.change_y >= 0:
             self.change_y = 0 #stop y motion
-            self.rect.y = SCREENH - self.rect.height #set player's bottom edge on bottom of screen
+            self.rect.y = GAMESURFH - self.rect.height #set player's bottom edge on bottom of screen
 
     def jump(self):
 

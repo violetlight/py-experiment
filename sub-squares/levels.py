@@ -137,7 +137,6 @@ class Level(object):
         self.enemy_list.update() # and every enemy object ... not yet used though--so empty
         self.special_blocks.update() #update special blocks
         self.bullet_list.update() #might be able to remove all of these
-        #self.all_sprites_list.update()
 
 
     ########################
@@ -181,8 +180,8 @@ class StartScreen(Level):
                 [210, 200, 400],
                 [210, 600, 300],
                 [210, 100, 100],
-                [420, 1000, SCREENH/2],
-                [600,   0,  SCREENH-PLATFORMH]
+                [420, 1000, GAMESURFH/2],
+                [600,   0,  GAMESURFH-PLATFORMH]
                 ]
         for platform in platforms:  #for each element of level, create a platform
             block = Platform((platform[0], PLATFORMH))
@@ -205,17 +204,18 @@ class StartScreen(Level):
         #########################
         #  event blocks         #
         #########################
-        doorblock = DoorBlock("starting door", (200, SCREENH-160), "first room", "first door")
+        doorblock = DoorBlock("starting door", (200, GAMESURFH-160), "first room", "first door")
         self.special_blocks.add(doorblock)
         self.doorlist[doorblock.name] = doorblock
 
     def draw(self):
-        SCREEN.fill(WHITE)
-        SCREEN.blit(self.bgsurf, self.bgsurfrect)
-        self.platform_list.draw(SCREEN)
-        self.enemy_list.draw(SCREEN)
-        self.special_blocks.draw(SCREEN)
-        self.bullet_list.draw(SCREEN)
+        #SCREEN.fill(WHITE)
+        GAMESURFACE.blit(self.bgsurf, self.bgsurfrect)
+        self.platform_list.draw(GAMESURFACE)
+        self.enemy_list.draw(GAMESURFACE)
+        self.special_blocks.draw(GAMESURFACE)
+        self.bullet_list.draw(GAMESURFACE)
+        SCREEN.blit(GAMESURFACE, GAMESURFACERECT)
 
 class FirstRoom(Level):
     def __init__(self):
@@ -260,7 +260,6 @@ class FirstRoom(Level):
         self.enemy_list.draw(SCREEN)
         self.special_blocks.draw(SCREEN)
         self.bullet_list.draw(SCREEN)
-        #self.all_sprites_list.draw(SCREEN)
 
 
 class Blank(Level):
@@ -290,5 +289,4 @@ class Blank(Level):
 #######################################
 mainlist = { "starting" : StartScreen(),
              "first room" : FirstRoom(),
-
              }
