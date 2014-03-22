@@ -215,7 +215,7 @@ class StartScreen(Level):
         self.enemy_list.draw(GAMESURFACE)
         self.special_blocks.draw(GAMESURFACE)
         self.bullet_list.draw(GAMESURFACE)
-        SCREEN.blit(GAMESURFACE, GAMESURFACERECT)
+        SCREEN.blit(GAMESURFACE, GAMESURFRECT)
 
 class FirstRoom(Level):
     def __init__(self):
@@ -227,7 +227,7 @@ class FirstRoom(Level):
                 [110, 70, 200, 400],
                 [110, 70, 600, 300],
                 [110, 70, 100, 100],
-                [120, 70, 1000, SCREENH/2],
+                [120, 70, 1000, GAMESURFH/2],
                 ]
         for platform in platforms:  #for each element of level, create a platform
             block = Platform((platform[0], platform[1]))
@@ -243,23 +243,24 @@ class FirstRoom(Level):
         #creates a speed powerup block and adds it to the list
         speedblock = SpeedBlock()
         speedblock.rect.x = -100
-        speedblock.rect.y = SCREENH - 77
+        speedblock.rect.y = GAMESURFH - 77
         self.special_blocks.add(gravityblock, speedblock)
 
         ########################
         #   event blocks       #
         ########################
-        self.doorblock = DoorBlock("first door", (300,SCREENH-128), "starting", "starting door")
+        self.doorblock = DoorBlock("first door", (300,GAMESURFH-128), "starting", "starting door")
         self.special_blocks.add(self.doorblock)
         self.doorlist[self.doorblock.name] = self.doorblock
 
     def draw(self):
 
-        SCREEN.fill(GREEN)
-        self.platform_list.draw(SCREEN)
-        self.enemy_list.draw(SCREEN)
-        self.special_blocks.draw(SCREEN)
-        self.bullet_list.draw(SCREEN)
+        GAMESURFACE.fill(GREEN)
+        self.platform_list.draw(GAMESURFACE)
+        self.enemy_list.draw(GAMESURFACE)
+        self.special_blocks.draw(GAMESURFACE)
+        self.bullet_list.draw(GAMESURFACE)
+        SCREEN.blit(GAMESURFACE, GAMESURFRECT)
 
 
 class Blank(Level):
