@@ -87,7 +87,7 @@ class Level(object):
         self.enemy_list = pygame.sprite.Group() # group for enemies.. not yet used
         self.special_blocks = pygame.sprite.Group() #group for gravity blocks
         self.bullet_list = pygame.sprite.Group()
-        self.bgrect = pygame.Rect((0,0,0,0)) #needs to be initialized for now
+        self.bgsurfrect = pygame.Rect((0,0,0,0)) #needs to be initialized for now
 
     def update(self):
         self.platform_list.update() #call update on every platform object
@@ -104,7 +104,7 @@ class Level(object):
             enemy.rect.x += shift_x
         for block in self.special_blocks:
             block.rect.x += shift_x
-        self.bgrect.x += shift_x
+        self.bgsurfrect.x += shift_x
 
 #######################################
 #                                     #
@@ -122,8 +122,11 @@ class Level01(Level):
         ##########################
         #  background images     #
         ##########################
+        self.bgsurf = pygame.Surface((4000, 600))
         self.bgimage = pygame.image.load('../images/level1bg.png')
-        self.bgrect = self.bgimage.get_rect(x=-self.level_limit_l, y=0)
+        self.bgrect = self.bgimage.get_rect()
+        self.bgsurf.blit(self.bgimage, self.bgrect)
+        self.bgsurfrect = self.bgsurf.get_rect(x=-1500)
 
         # a list of platforms........
         #           width  X     Y  of top left
@@ -152,8 +155,8 @@ class Level01(Level):
         #self.all_sprites_list.add(gravityblock, speedblock)
 
     def draw(self):
-
-        SCREEN.blit(self.bgimage, self.bgrect)
+        SCREEN.fill(WHITE)
+        SCREEN.blit(self.bgsurf, self.bgsurfrect)
         self.platform_list.draw(SCREEN)
         self.enemy_list.draw(SCREEN)
         self.special_blocks.draw(SCREEN)

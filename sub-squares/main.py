@@ -1,17 +1,20 @@
 #!/usr/bin/env python2
 
 #################################################
-#TO DO:
-#   seperate level and platforms into their own module,
-#  it really needs to be cleaned up.
-#                   work out what could be its own module and
-#               what other classes they depend on.. this could be very circular
-#
-#  transform player's image based on direction (flip if left or right)
-#
-#    change the paths so they don't care if it's unix-like or windows
-#
-#      Some kind of Enemy(s) must be made
+#TO DO:                                         #
+#                                               #
+#                                               #
+#                                               #
+#   change the paths so they don't care if it's #
+#    unix-like or windows.                      #
+#                                               #
+#      Some kind of Enemy(s) must be made       #
+#                                               #
+#   Resize screen and make room for a status    #
+#      bar of some kind to display game stats   #
+#                                               #
+#################################################
+
 from __future__ import print_function
 import pygame
 import sys
@@ -30,7 +33,7 @@ from levels import *
 def main():
     #pygame.init()
 
-    player = Player((300,300))
+    player = Player((300,300))#starting position of the player
     level_list = [Level01(), Level02()]
 
     #current level number
@@ -47,7 +50,13 @@ def main():
     done = False
 
     while not done:
-        SCREEN.blit(background, (0,0))
+
+
+        #SCREEN.blit(background, (0,0))
+
+        ##########################
+        #   Event loop           #
+        ##########################
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -81,25 +90,30 @@ def main():
                 current_level.bullet_list.add(bullet)
 
 
-        active_sprite_list.update()
-
+        ##########################
+        #  Call updates          #
+        ##########################
+        active_sprite_list.update() #investigate this..
         current_level.update()
 
-        #if player.rect.right > SCREENW:
-            #player.rect.right = SCREENW
 
-        #if player.rect.left < 0:
-            #player.rect.left = 0
-
-        if player.rect.x >= 500:
+        ##########################
+        #  World shifting        #
+        ##########################
+        if player.rect.x >= 500:       #Right
             diff = player.rect.x - 500
             player.rect.x = 500
             current_level.shift_world(-diff)
 
-        if player.rect.x <= 120:
+        if player.rect.x <= 120:       #Left
             diff = 120 - player.rect.x
             player.rect.x = 120
             current_level.shift_world(diff)
+
+
+        ##########################
+        # Level Switching        #
+        ##########################
 
         #current position is the player position relative to the screen offset by the amount the world is shifted by
         current_position = player.rect.x + current_level.world_shift
@@ -112,14 +126,23 @@ def main():
                     player.level = current_level #update player.level property
 
         if current_position > current_level.level_limit_l:
-            if player.rect.y <= 125:
+            if player.rect.x <= 120:
                 player.rect.x = 500
                 if level_list.pop():
                     current_level_no -= 1
                     current_level = level_list[current_level_no]
                     player.level = current_level
 
+        print("Current position", current_position)
+        print("Left level limit", current_level.level_limit_l)
+        print("Right level limit", current_level.level_limit_r)
+
+        ##########################
+        #  Bullet collision      #
+        ##########################
+
         for bullet in current_level.bullet_list: #iterate over the bullets (which are kept track of in the level... maybe that will change)
+
             ###check for collision with ENEMY###
             block_hit_list = pygame.sprite.spritecollide(bullet, current_level.enemy_list, False) #see if it collided with an enemy (none yet)
             for block in block_hit_list:#if it did, remove the bullet
@@ -132,11 +155,16 @@ def main():
             for block in block_hit_list:
                 current_level.bullet_list.remove(bullet)
 
+
+        #########################
+        #  Call draw methods    #
+        #########################
+
         current_level.draw()  #call draw function from current level
         active_sprite_list.draw(SCREEN) #if you call a pygame.sprite.Group.draw() method you must pass it the surface to draw to
 
-        CLOCK.tick(30)
 
+        CLOCK.tick(30)
         pygame.display.flip()
 
     pygame.quit()
