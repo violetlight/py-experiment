@@ -182,7 +182,7 @@ class Level01(Level):
         #########################
         #  event blocks         #
         #########################
-        doorblock = DoorBlock((200, SCREENH-160), Level02())
+        doorblock = DoorBlock((200, SCREENH-160), Level02(), False)
         self.special_blocks.add(doorblock)
 
     def draw(self):
