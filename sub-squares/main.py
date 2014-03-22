@@ -34,11 +34,13 @@ def main():
     #pygame.init()
 
     player = Player((300,300))#starting position of the player
-    level_list = [Level01(), Level02()]
+    #level_list = [Level01(), Level02()]
 
     #current level number
     current_level_no = 0
-    current_level = level_list[current_level_no]
+    current_level = mainlist["starting"]       #level_list[current_level_no]
+    #point this to levels.mainlist["starting"] or something
+
 
     background = pygame.Surface(SCREEN.get_size()).convert()
     background.fill(WHITE)
@@ -51,8 +53,6 @@ def main():
 
     while not done:
 
-
-        #SCREEN.blit(background, (0,0))
 
         ##########################
         #   Event loop           #

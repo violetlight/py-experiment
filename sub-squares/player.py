@@ -1,7 +1,7 @@
 from __future__ import print_function
 from constants import *
 import pygame
-from levels import GravityBlock, SpeedBlock, DoorBlock #This will hopefully be changed so that it doesn't need to do this
+from levels import GravityBlock, SpeedBlock, DoorBlock, mainlist #This will hopefully be changed so that it doesn't need to do this
 from time import time
 
 #######################################
@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
 
             ###DOOR###
             if isinstance(block, DoorBlock):
-                self.level = block.level
+                self.level = mainlist[block.level] 
 
 
         ###############################

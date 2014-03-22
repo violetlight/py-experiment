@@ -112,6 +112,7 @@ class Level(object):
         self.special_blocks = pygame.sprite.Group() #group for gravity blocks
         self.bullet_list = pygame.sprite.Group()
         self.bgsurfrect = pygame.Rect((0,0,0,0)) #needs to be initialized for now
+        self.roomlinks = []
 
     def update(self):
         self.platform_list.update() #call update on every platform object
@@ -182,7 +183,7 @@ class Level01(Level):
         #########################
         #  event blocks         #
         #########################
-        doorblock = DoorBlock((200, SCREENH-160), Level02(), True)
+        doorblock = DoorBlock((200, SCREENH-160), "first room")
         self.special_blocks.add(doorblock)
 
     def draw(self):
@@ -222,7 +223,11 @@ class Level02(Level):
         speedblock.rect.y = SCREENH - 77
         self.special_blocks.add(gravityblock, speedblock)
 
-        #self.all_sprites_list.add(gravityblock, speedblock)
+        ########################
+        #   event blocks       #
+        ########################
+        self.doorblock = DoorBlock((600,172), "starting")
+        self.special_blocks.add(self.doorblock)
 
     def draw(self):
 
@@ -252,3 +257,8 @@ class Blank(Level):
 
         def draw(self):
             pass
+
+mainlist = { "starting" : Level01(),
+             "first room" : Level02(),
+
+             }
