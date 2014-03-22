@@ -10,6 +10,7 @@ pygame.init()
 CLOCK = pygame.time.Clock()
 SCREENSIZE = SCREENW, SCREENH = 800, 600
 SCREEN = pygame.display.set_mode(SCREENSIZE)
+SCREENRECT = SCREEN.get_rect()
 PLAYERSIZE = PLAYERW, PLAYERH = 32, 96
 BULLETSPEED = 20
 BULLETSIZE = (10, 4)

@@ -110,22 +110,25 @@ def main():
                 player.rect.x = 500
                 current_level.shift_world(-diff)
         ### LEFT SIDE ###
-        if player.rect.x <= 120:
-            if current_position > current_level.level_limit_l:
-                if player.rect.x < 0:
-                    player.rect.x = 0
-            else:
+
+        if current_position < current_level.level_limit_l and player.shifting:
+            if player.rect.x <= 120:
                 diff = 120 - player.rect.x
                 player.rect.x = 120
                 current_level.shift_world(diff)
-
+        elif current_position >= current_level.level_limit_l:
+            player.shifting = False
+        elif player.shifting == False:
+            if player.rect.x < 0:
+                player.rect.x = 0
 
         #########################
         #  D E B U G            #
         #########################
-        print("Current position", current_position)
-        print("Left level limit", current_level.level_limit_l)
-        print("Right level limit", current_level.level_limit_r)
+        #print("Current position", current_position)
+        #print("Left level limit", current_level.level_limit_l)
+        #print("Right level limit", current_level.level_limit_r)
+        #print("World shift", current_level.world_shift)
 
 
         ##########################
