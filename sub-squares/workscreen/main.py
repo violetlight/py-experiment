@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 
 class Circe(pygame.sprite.Sprite):
     image = pygame.Surface((100,100))
-    image.set_colorkey((3,0,0))
+    image.set_colorkey((0,0,0))
     pygame.draw.circle(image, (255,0,0), (50,50), 50, 2)
     image.convert_alpha()
 
