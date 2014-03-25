@@ -35,6 +35,7 @@ STATSURFRECT = STATSURFACE.get_rect(top=GAMESURFH)
 #                                     #
 #######################################
 
+### GENERAL ###
 BLACK  = ( 35, 35,  35)
 WHITE  = (235, 235, 235)
 RED    = (255,  64,  64)
